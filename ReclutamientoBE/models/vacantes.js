@@ -1,40 +1,27 @@
 const db = require('./db');
+const PQ = require('pg-promise').ParameterizedQuery;
 
 function getAllVacantes() {
-    return db.any('SELECT * FROM vacantes ORDER BY idvacante;')
+    return db.any(allVacantes);
 };
 
 
 function getVacante(id) {
-    return db.one('SELECT * FROM vw_selectvacante WHERE idvacante=$1 LIMIT 1;', [id])
+    return db.one('SELECT * FROM vw_select_vacante WHERE id_vacante=$1 LIMIT 1;', [id])
 };
 
-function insertVacante(vacante) {  
-    return db.none('INSERT INTO vacantes( nombrecorto,descripcion,idTipoVacante,idTipoContrato,ciudad,duracion,requerimientos,costomaximo,fechainicio,posiciones,prioridad,comentarios)'+ 
-                        'VALUES(${nombreCorto}, ${descripcion}, ${tiempo}, ${contrato}, ${ciudad}, ${duracion}, ${requerimientos}, ${costomaximo}, ${fechainicio}, ${posiciones}, ${prioridad}, ${comentarios})',
-                        vacante);                            
+function insertVacante(vacante) {
+    return db.none('SELECT fn_insert_vacante(${nombreCorto}, ${descripcion}, ${tiempo}, ${contrato}, ${ciudad}, ${duracion}, ${requerimientos}, ${costomaximo}, ${fechainicio}, ${posiciones}, ${prioridad}, ${comentarios})',
+        vacante);
 };
 
 function updateVacante(vacante) {
-    return db.none('UPDATE vacantes SET '+
-        'nombrecorto = ${nombreCorto}, '+
-        'descripcion=${descripcion}, '+
-        'idtipovacante=${tiempo}, '+
-        'idtipocontrato=${contrato}, '+
-        'ciudad=${ciudad}, '+
-        'duracion=${duracion}, '+
-        'requerimientos=${requerimientos}, '+
-        'costomaximo=${costomaximo}, '+
-        'fechainicio=${fechainicio}, '+
-        'posiciones=${posiciones}, '+
-        'prioridad=${prioridad}, '+
-        'comentarios=${comentarios} '+
-        'WHERE idvacante = ${idvacante}',
-    vacante);
+    return db.none('SELECT fn_update_vacante(${nombreCorto}, ${descripcion}, ${tiempo}, ${contrato}, ${ciudad}, ${duracion}, ${requerimientos}, ${costomaximo}, ${fechainicio}, ${posiciones}, ${prioridad}, ${comentarios})',
+        vacante);
 };
 
 function deleteVacante(id) {
-
+    return db.none('SELECT fn_delete_vacante($1)', [id]);
 };
 
 module.exports = {
@@ -44,3 +31,6 @@ module.exports = {
     updateVacante: updateVacante,
     deleteVacante: deleteVacante
 }
+
+
+const allVacantes = new PQ('SELECT * FROM vacantes ORDER BY id_vacante;');

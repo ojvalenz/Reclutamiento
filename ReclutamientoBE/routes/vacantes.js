@@ -11,17 +11,10 @@ router.get('/', (rq, rs) => {
                 vacantes: vacantes
             });
         })
-        .catch()
-
-});
-
-router.get('/:id', (rq, rs) => {
-    model.getVacante(rq.params.id)
-        .then(data => {
-            rs.json({
-                vacante: data
-            })
+        .catch(err => {
+            rs.status(500).json(err);
         })
+
 });
 
 router.get('/vacante/new', (rq, rs) => {
@@ -32,9 +25,12 @@ router.get('/vacante/new', (rq, rs) => {
                 contratos: data[1]
             });
         })
+        .catch(err => {
+            rs.status(500).json(err);
+        })
 });
 
-router.get('/vacante/:id', (rq, rs) => {
+router.get('/:id', (rq, rs) => {
     model.getVacante(rq.params.id)
         .then(vacante => {
             modelTipos.getTipos()
@@ -46,6 +42,9 @@ router.get('/vacante/:id', (rq, rs) => {
                     });
                 })
         })
+        .catch(err => {
+            rs.status(500).json(err);
+        })
 })
 
 router.post('/', (rq, rs) => {
@@ -54,7 +53,6 @@ router.post('/', (rq, rs) => {
             rs.status(200).send('');
         })
         .catch((err) => {
-            console.log(err);
             rs.status(500).json(err);
         })
 });
@@ -65,13 +63,18 @@ router.put('/', (rq, rs) => {
             rs.status(200).send('');
         })
         .catch((err) => {
-            console.log(err);
             rs.status(500).json(err);
         })
 });
 
 router.delete('/:id', (rq, rs) => {
-
+    model.deleteVacante(rq.params.id)
+        .then(data => {
+            rs.status(200).send('');
+        })
+        .catch((err) => {
+            rs.status(500).json(err);
+        })
 });
 
 module.exports = router;

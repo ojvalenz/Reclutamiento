@@ -5,9 +5,13 @@ var model = require('../models/skills');
 router.get('/', (rq, rs) => {
     model.getGrupoSkills()
         .then(grupoSkills => {
-            rs.json({
-                grupoSkills: grupoSkills
-            })
+            model.getSkills()
+                .then(skills => {
+                    rs.json({
+                        grupoSkills: grupoSkills,
+                        skills: skills
+                    })
+                })
         })
         .catch(err => {
             rs.status(500).json(err);
@@ -15,23 +19,19 @@ router.get('/', (rq, rs) => {
 });
 
 router.get('/:idgrupo', (rq, rs) => {
-    model.getSkills(rq.params.idgrupo)
-        .then(skills => {
-            rs.json({
-                skills: skills
-            });
+    model.getGrupoSkill(rq.params.idgrupo)
+        .then(grupoSkill => {
+            model.getSkillsByGrupoSkill(grupoSkill.id_grupo_skill)
+                .then(skills => {
+                    rs.json({
+                        grupoSkill: grupoSkill,
+                        skills: skills
+                    });
+                })
+                .catch(err => {
+                    return err;
+                })
         })
-        .catch(err => {
-            rs.status(500).json(err);
-        })
-});
-
-router.get('/gruposkills/:idgruposkill', (rq, rs) => {
-    model.getGrupoSkill()
-    model.getSkills(rq.params.idgruposkill)
-        .then(
-
-        )
         .catch(err => {
             rs.status(500).json(err);
         })
@@ -39,8 +39,8 @@ router.get('/gruposkills/:idgruposkill', (rq, rs) => {
 
 router.post('/grupoSkills', (rq, rs) => {
     model.insertGrupoSkills(rq.body)
-        .then(() => {
-            rs.status(200).send('');
+        .then((data) => {
+            rs.status(200).json(data);
         })
         .catch(err => {
             rs.status(500).json(err);
