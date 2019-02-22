@@ -29,20 +29,23 @@ function getSkillsByGrupoSkill(idGrupoSkill) {
 }
 
 function insertGrupoSkills(grupoSkills) {
-    console.log(helper.insert(grupoSkills, null, 'grupo_skills'));
-    return db.none(helper.insert(grupoSkills, null, 'grupo_skills'));
+    let query = helper.insert(grupoSkills, null, 'grupo_skills')
+    return db.none(query);
 }
 
 function insertSkill(skill) {
-    return db.none(helper.insert(skill, null, 'skills'));
+    let query = helper.insert(skill, null, 'skills');
+    return db.none(query);
 }
 
 function updateGrupoSkills(grupoSkills) {
-    return db.none(helper.update(grupoSkills, ['nombre'], 'grupo_skills') + ' WHERE id_grupo_skill = ' + grupoSkills.id_grupo_skill);
+    let query = helper.update(grupoSkills, ['nombre'], 'grupo_skills') + ' WHERE id_grupo_skill = ' + grupoSkills.id_grupo_skill
+    return db.none(query);
 }
 
 function updateSkill(skill) {
-    return db.none(helper.update(skill, ['id_grupo_skill', 'nombre'], 'skills') + ' WHERE id_skill = ' + skill.id_skill);
+    let query = helper.update(skill, ['id_grupo_skill', 'nombre'], 'skills') + ' WHERE id_skill = ' + skill.id_skill;
+    return db.none(query);
 }
 
 module.exports = {

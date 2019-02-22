@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var vacantesRouter = require('./routes/vacantes');
 var skillsRouter = require('./routes/skills');
+var candidatosRouter = require('./routes/candidatos');
 
 var app = express();
 
@@ -18,5 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/vacantes', vacantesRouter);
 app.use('/skills', skillsRouter);
+app.use('/candidatos', candidatosRouter);
 
 module.exports = app;
