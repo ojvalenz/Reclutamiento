@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var vacantesRouter = require('./routes/vacantes');
 var skillsRouter = require('./routes/skills');
@@ -9,6 +10,7 @@ var candidatosRouter = require('./routes/candidatos');
 
 var app = express();
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
