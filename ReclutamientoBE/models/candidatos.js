@@ -15,7 +15,11 @@ const tbl_candidatos = helper.ColumnSet([
     'foto',
     'skype',
     'grado_estudios',
-    'grado_ingles'
+    'grado_ingles',
+    {
+        name: 'skills',
+        mod: ':json'
+    }
 ], {
     table: 'candidatos'
 });
@@ -61,9 +65,10 @@ function insertCandidato(candidato, persona) {
 
 function updateCandidato(candidato, persona) {
     let query = helper.update(candidato, tbl_candidatos) + ' WHERE id_candidato = ' + candidato.id_candidato;
+
     return db.tx(tx => {
         return tx.batch([
-            model_persona.updatePersona(persona),
+            tx.none(model_persona.updatePersona(persona)),
             tx.none(query)
         ]);
     })

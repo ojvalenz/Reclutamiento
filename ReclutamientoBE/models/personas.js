@@ -28,7 +28,7 @@ function insertPersona(persona) {
 }
 
 function updatePersona(persona) {
-    let query = new PQ(helper.update(persona, tbl_personas) + ' WHERE id_persona = ' + persona.id_persona);
+    let query = helper.update(persona, tbl_personas) + ' WHERE id_persona = ' + persona.id_persona;
     return query;
 }
 

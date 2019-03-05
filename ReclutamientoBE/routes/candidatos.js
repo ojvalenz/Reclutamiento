@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const model_persona = require('../models/personas');
-const model_candidato = require('../models/candidatos');
+const model = require('../models/candidatos');
 
 router.get('/', (rq, rs) => {
-    model_candidato.getCandidatos()
+    model.getCandidatos()
         .then(candidatos => {
             rs.status(200).json(candidatos);
         })
@@ -14,7 +13,7 @@ router.get('/', (rq, rs) => {
 });
 
 router.get('/:id_candidato', (rq, rs) => {
-    model_candidato.getCandidato(rq.params.id_candidato)
+    model.getCandidato(rq.params.id_candidato)
         .then(candidatos => {
             rs.status(200).json(candidatos);
         })
@@ -28,7 +27,7 @@ router.post('/new', (rq, rs) => {
     let candidato = rq.body.candidato;
 
     if (persona != undefined || candidato != undefined) {
-        model_candidato.insertCandidato(candidato, persona)
+        model.insertCandidato(candidato, persona)
             .then(() => {
                 rs.status(200).send('Candidato gradado');
             })

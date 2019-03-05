@@ -14,7 +14,11 @@ const tbl_vacantes = helper.ColumnSet([
     'fecha_inicio',
     'posiciones',
     'prioridad',
-    'comentarios'
+    'comentarios',
+    {
+        name: 'grupo_skills',
+        cast: 'int[]'
+    }
 ], {
     table: 'vacantes'
 });
@@ -26,13 +30,13 @@ function getAllVacantes() {
 
 
 function getVacante(id_vacante) {
-    let query = new PQ('SELECT * FROM vw_select_vacante WHERE id_vacante=$1 LIMIT 1;');
+    let query = new PQ('SELECT * FROM vacantes WHERE id_vacante=$1 LIMIT 1;');
     query.values = [id_vacante];
     return db.one(query);
 };
 
 function insertVacante(vacante) {
-    let query = helper.update(vacante, tbl_vacantes);
+    let query = helper.insert(vacante, tbl_vacantes);
     return db.none(query);
 };
 
