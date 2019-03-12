@@ -78,10 +78,16 @@ function deleteCandidato(id_candidato) {
 
 }
 
+function asignarVacantes(obj) {
+    let query = helper.insert(obj, ['id_vacante', 'id_candidato'], 'candidato_vacante');
+    return db.none(query);
+}
+
 module.exports = {
     getCandidatos,
     getCandidato,
     insertCandidato,
     updateCandidato,
-    deleteCandidato
+    deleteCandidato,
+    asignarVacantes
 };

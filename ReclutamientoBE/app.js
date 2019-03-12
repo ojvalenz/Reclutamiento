@@ -7,6 +7,7 @@ var cors = require('cors');
 var vacantesRouter = require('./routes/vacantes');
 var skillsRouter = require('./routes/skills');
 var candidatosRouter = require('./routes/candidatos');
+var evaluacionesRouter = require('./routes/evaluaciones');
 
 var app = express();
 
@@ -22,5 +23,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/vacantes', vacantesRouter);
 app.use('/skills', skillsRouter);
 app.use('/candidatos', candidatosRouter);
-
+app.use('/evaluaciones', evaluacionesRouter);
 module.exports = app;

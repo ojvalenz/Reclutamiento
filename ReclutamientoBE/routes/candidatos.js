@@ -57,4 +57,12 @@ router.put('/', (rq, rs) => {
     }
 })
 
+router.post('/asignar/vacantes', (rq, rs) => {
+    model.asignarVacantes(rq.body)
+        .then(() =>
+            rs.status(200).send(rq.body)
+        )
+        .catch(err => rs.status(500).json(err))
+})
+
 module.exports = router;
