@@ -16,7 +16,7 @@ function getGrupoSkill(idGrupoSkill) {
 }
 
 function getSkills() {
-    let query = new PQ('SELECT * FROM skills ORDER BY id_grupo_skill, id_skill;');
+    let query = new PQ('SELECT * FROM skills ORDER BY id_grupo_skill, secuencia;');
 
     return db.any(query);
 }

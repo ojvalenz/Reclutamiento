@@ -18,19 +18,26 @@ const tbl_vacantes = helper.ColumnSet([
     {
         name: 'grupo_skills',
         cast: 'int[]'
-    }
+    },
+    "id_estatus",
+    "id_reclutador_creacion",
+    "id_reclutador_asignado",
+    "tarifa",
+    "id_empresa_contratante",
+    "trabajando_actualmente",
+    "empresa_empleadora"
 ], {
     table: 'vacantes'
 });
 
 function getAllVacantes() {
-    let query = new PQ('SELECT * FROM vacantes ORDER BY id_vacante;');
+    let query = new PQ('SELECT * FROM vacantes WHERE activo = true ORDER BY id_vacante;');
     return db.any(query);
 };
 
 
 function getVacante(id_vacante) {
-    let query = new PQ('SELECT * FROM vacantes WHERE id_vacante=$1 LIMIT 1;');
+    let query = new PQ('SELECT * FROM vacantes WHERE activo = true AND id_vacante=$1 LIMIT 1;');
     query.values = [id_vacante];
     return db.one(query);
 };

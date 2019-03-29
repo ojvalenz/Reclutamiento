@@ -73,7 +73,7 @@ router.post('/asignar/vacantes', (rq, rs) => {
     model.asignarVacantes(rq.body)
         .then(() =>
             rs.status(200)
-            .json(rs.locals.respuesta('S', 'Vacantes asignadas', ''))
+            .json(rs.app.locals.respuesta('S', 'Vacantes asignadas', ''))
         )
         .catch(err => rs.status(500)
             .json(rs.app.locals.respuesta('E'.err.name, err))

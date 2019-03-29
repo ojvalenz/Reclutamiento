@@ -19,7 +19,25 @@ const tbl_candidatos = helper.ColumnSet([
     {
         name: 'skills',
         mod: ':json'
-    }
+    }, "sueldo_actual",
+    "prestaciones_actual",
+    "expectativa_actual",
+    "fecha_actualizacion",
+    "id_reclutador_alta",
+    "id_fuente",
+    "oferta",
+    "fecha_oferta",
+    "id_reclutador_oferta",
+    "R2R",
+    "tipo_casa",
+    "trabajo_actual",
+    "razon_cambio_trabajo",
+    "reubicacion",
+    "estado_civil",
+    "dependientes_economicos",
+    "ingresos_extras",
+    "ingreso_extra_fam",
+    "proceso_reclutamiento",
 ], {
     table: 'candidatos'
 });
@@ -79,7 +97,7 @@ function deleteCandidato(id_candidato) {
 }
 
 function asignarVacantes(obj) {
-    let query = helper.insert(obj, ['id_vacante', 'id_candidato'], 'candidato_vacante');
+    let query = helper.insert(obj, ['id_vacante', 'id_candidato', 'id_reclutador', 'fecha_asignacion', 'estatus_candidato_proceso'], 'candidato_vacante');
     return db.none(query);
 }
 
