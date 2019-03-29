@@ -7,7 +7,8 @@ const tbl_personas = new helper.ColumnSet([
     'apellido_paterno',
     'apellido_materno',
     'tel_celular',
-    'email'
+    'email',
+    'pass'
 ], {
     table: 'personas'
 });
