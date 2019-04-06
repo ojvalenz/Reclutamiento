@@ -1,0 +1,155 @@
+<div class="container pad-top-60px">
+  <form>
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <h5 class="title">Información General</h5>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="persona.nombre" type="text" placeholder="Nombre" maxlength="50"
+                 name="nombre" v-validate="'required'" :class="{'is-danger': errors.has('nombre'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="persona.apellido_paterno" type="text" placeholder="Apellido Paterno" maxlength="30"
+                 name="apellido_paterno" v-validate="'required'" :class="{'is-danger': errors.has('apellido_paterno'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="persona.apellido_materno" type="text" placeholder="Apellido Materno" maxlength="30"
+                 name="apellido_materno" v-validate="'required'" :class="{'is-danger': errors.has('apellido_materno'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="persona.tel_celular" type="tel" placeholder="Telefono Celular" maxlength="14"
+                 name="tel_celular" v-validate="'required'" :class="{'is-danger': errors.has('tel_celular'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="persona.email" type="email" placeholder="E-Mail" maxlength="30"
+                 name="email" v-validate="'required'" :class="{'is-danger': errors.has('email'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.pais" type="text" class="form-control" placeholder="Pais">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.ciudad" type="text" class="form-control" placeholder="Ciudad">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.codigo_postal" type="text" class="form-control" placeholder="Codigo Postal">
+        </b-form-group>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <h5 class="title">Educación</h5>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.universidad" type="text" class="form-control" placeholder="Universidad">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <date-picker v-model="candidato.fecha_graduacion" format="YYYY-MM-DD" value-type="format" lang="es" input-class="form-control" class="w-100" placeholder="Fecha Graduacion"></date-picker>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.curriculum_vitae" type="text" class="form-control" placeholder="Curriculum Vitae">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.cv_digital" type="text" class="form-control" placeholder="CV Digital">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="candidato.skype" type="text" class="form-control" placeholder="Usuario Skype">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <b-form-select v-model="candidato.grado_estudios" :options="catalogs.estudios" text-field="nivel" value-field="valor">
+            <template slot="first">
+              <option :value="null" disabled>-- Ultimo Grado de Estudios --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <b-form-select v-model="candidato.grado_ingles" :options="catalogs.ingles" text-field="nivel" value-field="valor">
+            <template slot="first">
+              <option :value="null" disabled>-- Nivel Ingles --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <h5 class="title">Skills</h5>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <template v-for="(grupo, index) in grupoSkills">
+          <b-card class="text-left">
+            <b-card-header v-b-toggle="'collapse' + index" header-tag="header" class="p-1" role="tab">
+              <h6 v-text="grupo.nombre" class="collapse-header"></h6>
+            </b-card-header>
+
+            <b-collapse :id="'collapse' + index">
+              <div class="collapse-body">
+                <div v-for="skill in skillsFiltered(grupo.id_grupo_skill)">
+                  <h6 v-text="skill.nombre"></h6>
+                  <v-slider label="Experiencia"
+                  v-model="skill.nivel"
+                  :tick-labels="catalogs.nivelSkill" :max="4" step="1"
+                  ticks="always" color="#17a2b8" height="15px" tick-size="1"></v-slider>
+
+                </div>
+              </div>
+            </b-collapse>
+          </b-card>
+        </template>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <hr style="margin-left: 0px;" class="mar-rig-10px">
+        <router-link to="/candidatos" class="btn btn-secondary mar-rig-10px w-120px">Cancelar</router-link>
+        <button @click="saveCandidato" type="button" class="btn btn-info w-120px">Guardar</button>
+      </div>
+    </div>
+
+    <br />
+    <br />
+  </form>
+</div>

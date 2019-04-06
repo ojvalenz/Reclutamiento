@@ -1,0 +1,32 @@
+hr {
+  width: 100%;
+  background-color: #c7d3df;
+  margin-left: 20px;
+  margin-bottom: 25px;
+}
+
+.title {
+  min-width: fit-content;
+}
+
+select {
+  color: #6d6d6d;
+}
+
+.card-body {
+  padding: 0px;
+}
+
+.collapse-body {
+  padding: 15px 20px;
+}
+
+.card-header {
+  cursor: pointer;
+}
+.collapse-header {
+  font-size: 1.1rem;
+  font-weight: unset;
+  padding: 5px 15px;
+  color: #545454;
+}

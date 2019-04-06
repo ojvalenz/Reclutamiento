@@ -1,0 +1,71 @@
+<div class="component-container">
+  <div class="row mar-bot-20px">
+    <div class="col-sm-12 display-inline">
+      <h3 class="title">Candidatos</h3>
+      <div class="f-right">
+        <router-link to="/candidato" class="btn btn-narange">Agregar candidato</router-link>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row mar-top-20px">
+    <div class="col-sm-12 col-md-2">
+      <p><strong>Filtros</strong></p>
+      <p>Todos los candidatos</p>
+      <a class="link"><i class="fas fa-plus"></i> Agregar Filtro</a>
+    </div>
+
+    <div class="col-sm-12 col-md-10">
+      <table class="table table-advance table-hover">
+        <thead>
+          <tr>
+            <th class="w-40px pad-top-20px">
+              <label class="checkContainer">
+                <input @click="fnSelectUnselectAll($event)" type="checkbox"><span class="checkmark" style="top: -8px;"></span>
+              </label>
+            </th>
+            <template v-if="candidatesSelected.length > 0">
+              <th colspan="6" class="actions">
+                <span><i class="fas fa-arrow-right"></i> Asignar</span>
+                <span>
+                  <router-link v-if="candidatesSelected.length == 1"
+                               :to="'/candidato/' + candidatesSelected[0].id_candidato"><i class="fas fa-edit"></i>Editar</router-link>
+                </span>
+                <span><i class="fas fa-trash-alt"></i> Eliminar</span>
+
+              </th>
+            </template>
+            <template v-else>
+              <th>Nombre</th>
+              <th>Apellido Pat.</th>
+              <th>Apellido Mat.</th>
+              <th>Email</th>
+              <th>Pais</th>
+              <th>Ciudad</th>
+            </template>
+          </tr>
+        </thead>
+        <tbody v-if="candidatos.length">
+          <tr v-for="(candidato, index) in candidatos">
+            <td>
+              <label class="checkContainer">
+                  <input v-model="candidato.selected" @click="fnAjustarColumnas" type="checkbox"><span class="checkmark"></span>
+              </label>
+            </td>
+            <td v-text="candidato.persona.nombre"></td>
+            <td v-text="candidato.persona.apellido_paterno"></td>
+            <td v-text="candidato.persona.apellido_materno"></td>
+            <td v-text="candidato.persona.email"></td>
+            <td v-text="candidato.pais"></td>
+            <td v-text="candidato.ciudad"></td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr> <td colspan="7" align="center"><p>No hay candidatos para mostrar</p></td> </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>

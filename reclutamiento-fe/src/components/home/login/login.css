@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+.login-container {
+  background-color: #ffffff;
+  line-height: 1.6em;
+  font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
+  color: #000;
+  text-align: center;
+  background-color: white;
+  background-image: url(../../../assets/login/background.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100%;
+  height: auto;
+  width: 100%;
+  position: fixed;
+}
+
+form {
+  width: 300px;
+  margin: 6% auto 25px;
+}
+
+.logo {
+  width: 200px;
+  margin: 0 auto;
+  position: relative;
+  left: unset;
+  background-size: contain;
+  margin-bottom: 50px;
+}
+
+input {
+  height: 40px !important;
+}
+
+.input-group-addon {
+  top: 0px !important;
+  color: gray !important;
+}
+
+.first-group {
+  margin-bottom: 10px;
+}
+
+#submit-wrapper, #reset-password-wrapper {
+  position: relative;
+}
+
+#btnLogin {
+  background-color: #2a2f79;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 10px 20px;
+  width: 300px;
+  background-position: right 16px center;
+}
+
+.ic-login {
+  position: absolute;
+  top: 12px;
+  right: 23px;
+  pointer-events: none;
+  color: white;
+}
+
+#lost-password {
+  display: inline-block;
+  padding: 12px;
+  margin-top: -6px;
+  color: #309bb3;
+}
+
+.wrongPasswordMsg {
+  margin-top: 15px;
+  display: block;
+  padding: 10px;
+  background-color: rgba(255, 244, 0, 0.43);
+  color: #fff;
+  text-align: left;
+  word-wrap: break-word;
+  border-radius: 3px;
+}
