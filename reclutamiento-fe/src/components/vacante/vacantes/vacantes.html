@@ -26,7 +26,7 @@
             </th>
             <template v-if="vacantesSelected.length > 0">
               <th colspan="6" class="actions">
-                <span @click="$refs.mdAsignarVacante.open()"
+                <span @click=""
                       ><i class="fas fa-arrow-right"></i> Asignar</span>
                 <span>
                   <router-link v-if="vacantesSelected.length == 1"
@@ -68,26 +68,6 @@
       </table>
     </div>
   </div>
-
-
-  <sweet-modal ref="mdAsignarVacante" title="Asignar vacante" overlay-theme="dark" @open="" @close="" class="initial-overflow">
-    <form>
-      <div class="modal-body">
-        <h5>Candidatos</h5>
-        <v-select v-model="candidatosSelected" label="nombreCompleto" :options="candidatos" input-id="id_candidato" :filterable="true" multiple></v-select>
-
-        <div style="clear: both;"></div>
-      </div>
-      <div class="row row-footer">
-        <div class="col-sm-12">
-          <div class="modal-footer">
-            <button @click="$refs.mdAsignarVacante.close()" class="btn btn-secondary" type="button">Close</button>
-            <button @click="" class="btn btn-info" type="button" style="width: 100px;">Asignar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </sweet-modal>
 
 </div>
 

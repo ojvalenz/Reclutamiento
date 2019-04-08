@@ -1,0 +1,78 @@
+<div class="component-container">
+  <div class="row">
+    <div class="col-sm-12 col-md-4">
+      <div class="row container-details">
+        <div class="col-sm-12">
+          <div v-text="getFirstLetterName()" class="img-letter"></div>
+          <span v-text="persona.email" class="fs-17px"></span><br />
+          <span v-text="persona.nombre + ' ' + persona.apellido_paterno + ' ' + persona.apellido_materno" class="name"></span>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="row container-details">
+        <div class="col-sm-12">
+          <h5 class="fs-17px">Sobre este contacto</h5>
+
+          <div>
+            <br />
+            <h6>Información general</h6>
+            <hr />
+            <p class="mar-bot-5px">
+              <i class="fas fa-user color-auriz mar-rig-10px"></i>
+              <span v-text="persona.nombre + ' ' + persona.apellido_paterno + ' ' + persona.apellido_materno"></span>
+            </p>
+            <p class="mar-bot-5px">
+              <i class="fas fa-envelope color-auriz mar-rig-10px"></i>
+              <span v-text="persona.email"></span>
+            </p>
+            <p class="mar-bot-5px">
+              <i class="fas fa-mobile color-auriz mar-rig-10px"></i>
+              <span v-text="persona.tel_celular"></span>
+            </p>
+            <p class="mar-bot-5px">
+              <i class="fas fa-map-marker-alt color-auriz mar-rig-10px"></i>
+              <span v-text="candidato.ciudad + ', ' + candidato.pais + '. ' + candidato.codigo_postal"></span>
+            </p>
+          </div>
+
+          <div>
+            <br />
+            <h6>Educación</h6>
+            <hr />
+            <p class="mar-bot-5px">
+              <i class="fas fa-graduation-cap color-auriz mar-rig-10px left"></i>
+              <span style="display: grid;">
+                <strong><span v-text="candidato.universidad"></span></strong>
+                <span v-text="candidato.curriculum_vitae"></span>
+              </span>
+            </p>
+          </div>
+
+          <div v-if="candidato.skillsGrouped">
+            <br />
+            <h6>Skills</h6>
+            <hr />
+            <template v-for="(skills, groupName) in candidato.skillsGrouped">
+              <p class="mar-bot-5px">
+                <i class="fas fa-check-circle color-auriz mar-rig-10px left"></i>
+                <span style="display: grid;">
+                  <strong><span v-text="groupName"></span></strong>
+                  
+                  <template v-for="(skill, index) in skills">
+                    <span v-text="skill.nombre"></span>
+                  </template>
+
+                </span>
+              </p>
+            </template>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-8">
+    </div>
+  </div>
+</div>

@@ -26,10 +26,13 @@
             </th>
             <template v-if="candidatesSelected.length > 0">
               <th colspan="6" class="actions">
-                <span><i class="fas fa-arrow-right"></i> Asignar</span>
                 <span>
                   <router-link v-if="candidatesSelected.length == 1"
-                               :to="'/candidato/' + candidatesSelected[0].id_candidato"><i class="fas fa-edit"></i>Editar</router-link>
+                               :to="'/candidato/detalle/' + candidatesSelected[0].id_candidato"><i class="fas fa-arrow-right"></i> Detalle</router-link>
+                </span>
+                <span>
+                  <router-link v-if="candidatesSelected.length == 1"
+                               :to="'/candidato/' + candidatesSelected[0].id_candidato"><i class="fas fa-edit"></i> Editar</router-link>
                 </span>
                 <span><i class="fas fa-trash-alt"></i> Eliminar</span>
 

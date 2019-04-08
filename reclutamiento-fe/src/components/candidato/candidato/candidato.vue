@@ -2,6 +2,7 @@
 <template src="./candidato.html"></template>
 
 <script>
+  import { api_SaveCandidato, api_UpdateCandidato, api_GetCandidato, api_GetSkills } from '../../../utils/js/api';
   import DatePicker from 'vue2-datepicker'; //https://github.com/mengxiong10/vue2-datepicker
   import { isEmpty } from '../../../utils/js/helper';
 
@@ -39,34 +40,32 @@
 
       fnGetSkills() {
         const self = this;
-        this.$http(self, '/skills', this.Constants.HTTPmethod.GET, null, this.Constants.ContentType.URL, this.Constants.ResponseType.JSON,
-          function (response) {
-            self.grupoSkills = response.grupoSkills;
-            self.skills = response.skills;
+        api_GetSkills(this, true, function (response) {
+          self.grupoSkills = response.grupoSkills;
+          self.skills = response.skills;
 
-            if (! isEmpty(self.$route.params.id_candidato)) {
-              //Edicion de usuario, cargamos sus datos
-              self.fnGetCandidato();
-            }
-          }, true, null, true);
+          if (!isEmpty(self.$route.params.id_candidato)) {
+            //Edicion de usuario, cargamos sus datos
+            self.fnGetCandidato();
+          }
+        }, null);
       },
 
       fnGetCandidato() {
         const self = this;
-        this.$http(self, '/candidatos/' + this.$route.params.id_candidato, this.Constants.HTTPmethod.GET, null, this.Constants.ContentType.URL, this.Constants.ResponseType.JSON,
-          function (candidatos) {
-            if (candidatos && candidatos.length > 0) {
-              self.candidato = candidatos[0];
-              self.persona = candidatos[0].persona;
-              if (self.candidato.skills && self.candidato.skills.length > 0) {
-                self.candidato.skills.forEach(function (cSkill) {
-                  self.skills.find(function (skill) {
-                    return skill.id_skill == cSkill.id_skill;
-                  }).nivel = cSkill.nivel;
-                });
-              }
+        api_GetCandidato(this, this.$route.params.id_candidato, true, function (candidatos) {
+          if (candidatos && candidatos.length > 0) {
+            self.candidato = candidatos[0];
+            self.persona = candidatos[0].persona;
+            if (self.candidato.skills && self.candidato.skills.length > 0) {
+              self.candidato.skills.forEach(function (cSkill) {
+                self.skills.find(function (skill) {
+                  return skill.id_skill == cSkill.id_skill;
+                }).nivel = cSkill.nivel;
+              });
             }
-          }, true, null, true);
+          }
+        }, null);
       },
 
       loadData() { //Este metodo carga los catalogos y las entidades requeridas
@@ -89,25 +88,21 @@
             this.candidato.skills = this.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
             const parameters = { candidato: this.candidato, persona: this.persona };
             if (isEmpty(this.candidato.id_candidato)) {
-              this.$http(self, '/candidatos/new', this.Constants.HTTPmethod.POST, parameters, this.Constants.ContentType.JSON, this.Constants.ResponseType.JSON,
-                function (response) {
-
-                  self.alert(self, self.Constants.DialogType.CONFIRM, self.Constants.Style.SUCCESS, "",
-                    "El candidato se ha guardo, ¿Quieres agregar un nuevo candidato?",
-                    null, null, true, function () {
-                      //Limpiamos el formulario
-                      self.candidato = beanCandidato();
-                      self.persona = beanPersona();
-                      self.skills.map(function (skill) { skill.nivel = 0; return skill; });
-                      setTimeout(() => { self.errors.clear(); }, 100);
-                    }, function () { self.$router.push('/candidatos'); });
-
-                }, true, null, true);
+              api_SaveCandidato(this, parameters, true, function (response) {
+                self.alert(self, self.Constants.DialogType.CONFIRM, self.Constants.Style.SUCCESS, "",
+                  "El candidato se ha guardo, ¿Quieres agregar un nuevo candidato?",
+                  null, null, true, function () {
+                    //Limpiamos el formulario
+                    self.candidato = beanCandidato();
+                    self.persona = beanPersona();
+                    self.skills.map(function (skill) { skill.nivel = 0; return skill; });
+                    setTimeout(() => { self.errors.clear(); }, 100);
+                  }, function () { self.$router.push('/candidatos'); });
+              }, null);
             } else {
-              this.$http(this, '/candidatos', this.Constants.HTTPmethod.PUT, parameters, this.Constants.ContentType.JSON, this.Constants.ResponseType.JSON,
-                function (response) {
-                  self.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
-                }, true, null, true);
+              api_UpdateCandidato(this, parameters, true, function (response) {
+                self.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
+              }, null);
             }
           } else {
             this.notify(this, this.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);

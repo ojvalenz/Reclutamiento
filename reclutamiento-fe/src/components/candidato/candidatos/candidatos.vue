@@ -4,7 +4,7 @@
 <template src="./candidatos.html"></template>
 
 <script>
-  
+  import { api_GetCandidatos } from '../../../utils/js/api';
 
   export default {
     name: 'Candidatos',
@@ -29,10 +29,9 @@
 
       fnFindCandidatos() { //Funcion para buscar los candidatos
         const self = this;
-        this.$http(this, '/candidatos', this.Constants.HTTPmethod.GET, null, this.Constants.ContentType.URL, this.Constants.ResponseType.JSON,
-          function (candidatos) {
-            self.candidatos = candidatos.map(function (candidato) {candidato.selected = false;return candidato;});
-          }, true, null, true);
+        api_GetCandidatos(this, true, function (candidatos) {
+          self.candidatos = candidatos.map(function (candidato) { candidato.selected = false; return candidato; });
+        }, null);
       },
 
       fnSelectUnselectAll($event) { //Funcion para seleccionar o des-seleccionar todos los candidatos

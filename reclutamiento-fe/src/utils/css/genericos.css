@@ -12,6 +12,8 @@ body, html {
 .w-40px {width: 40px;}
 .w-120px {width: 120px;}
 
+.fs-17px {font-size: 17px;}
+
 
 .display-inline {display: inline;}
 .f-right {float:right;}
@@ -20,17 +22,29 @@ body, html {
   background-color: #f2f2f2;
 }
 
+.clear {
+  clear: both;
+  height: 20px;
+}
+
 .mar-rig-10px {margin-right: 10px;}
 .mar-rig-20px {margin-right: 20px;}
 
 .mar-top-20px {margin-top: 20px;}
 
+.mar-bot-5px {margin-bottom: 5px;}
 .mar-bot-20px {margin-bottom: 20px;}
 
 .pad-left-350px {padding-left: 250px;}
 
 .pad-top-20px {padding-top: 20px !important;}
 .pad-top-60px {padding-top: 60px;}
+
+.color-auriz {color: #17a2b8;}
+
+.component-container {
+  padding: 90px 40px;
+}
 
 .btn-primary {
   background-color: #5db4c8;

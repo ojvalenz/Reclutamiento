@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '@/components/home/login/Login';
-import Candidato from '@/components/headhunter/candidato/Candidato';
-import Candidatos from '@/components/headhunter/candidatos/Candidatos';
-import Vacantes from '@/components/headhunter/vacantes/Vacantes';
-import Vacante from '@/components/headhunter/vacante/Vacante';
+import Candidato from '@/components/candidato/candidato/Candidato';
+import CandidatoDetalle from '@/components/candidato/candidatoDetalle/CandidatoDetalle';
+import Candidatos from '@/components/candidato/candidatos/Candidatos';
+import Vacantes from '@/components/vacante/vacantes/Vacantes';
+import Vacante from '@/components/vacante/vacante/Vacante';
 
 Vue.use(Router)
 
@@ -25,6 +26,12 @@ const routes = [
     name: 'candidato',
     path: '/candidato/:id_candidato?',
     component: Candidato,
+    meta: { requiresAuth: true, candidateAuth: false, headhunterAuth: false, interviewerAuth: false, adminAuth: true }
+  },
+  {
+    name: 'candidatoDetalle',
+    path: '/candidato/detalle/:id_candidato?',
+    component: CandidatoDetalle,
     meta: { requiresAuth: true, candidateAuth: false, headhunterAuth: false, interviewerAuth: false, adminAuth: true }
   },
   {

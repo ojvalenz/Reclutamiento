@@ -4,7 +4,7 @@
 <template src="./vacantes.html">
 </template>
 <script>
-
+  import { api_GetVacantes } from '../../../utils/js/api';
 
   export default {
     name: 'Vacantes',
@@ -27,25 +27,16 @@
     methods: {
       fnLoadData() { //Este metodo carga los catalogos y las entidades requeridas
         this.fnFindVacantes();
-        this.fnFindCandidatos();
       },
 
       fnFindVacantes() { //Funcion para buscar los candidatos
         const self = this;
-        this.$http(this, '/vacantes', this.Constants.HTTPmethod.GET, null, this.Constants.ContentType.URL, this.Constants.ResponseType.JSON,
-          function (vacantes) {
-            self.vacantes = vacantes.map(function (vacante) { vacante.selected = false; return vacante;});
-          }, true, null, true);
-      },
-      fnFindCandidatos() { //Funcion para buscar los candidatos
-        const self = this;
-        this.$http(this, '/candidatos', this.Constants.HTTPmethod.GET, null, this.Constants.ContentType.URL, this.Constants.ResponseType.JSON,
-          function (candidatos) {
-            self.candidatos = candidatos.map(function (candidato) { candidato.nombreCompleto = candidato.persona.nombre + " " + candidato.persona.apellido_paterno + " " + candidato.persona.apellido_materno; return candidato; });
-          }, true, null, true);
+        api_GetVacantes(this, true, function (vacantes) {
+          self.vacantes = vacantes.map(function (vacante) { vacante.selected = false; return vacante; });
+        }, null);
       },
 
-      fnSelectUnselectAll($event) { //Funcion para seleccionar o des-seleccionar todos los candidatos
+      fnSelectUnselectAll($event) { //Funcion para seleccionar o des-seleccionar todas las vacantes
         this.vacantes.forEach(function (vacante) {
           vacante.selected = $event.target.checked;
         });
