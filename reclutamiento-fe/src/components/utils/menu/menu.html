@@ -1,0 +1,54 @@
+<div>
+  <b-navbar toggleable="lg" type="dark" variant="info">
+    <b-navbar-brand href="#">
+      <img class="navbar-brand logo" src="../../../assets/logo-white.png" />
+    </b-navbar-brand>
+
+    <b-navbar-toggle target="nav_collapse" />
+
+    <b-collapse is-nav id="nav_collapse">
+      <b-navbar-nav>
+        <b-nav-item-dropdown text="Vacantes" right>
+          <b-dropdown-item>
+            <router-link to="/vacantes">Ver vacantes</router-link>
+          </b-dropdown-item>
+          <b-dropdown-item>
+            <router-link to="/vacante">Agregar vacante</router-link>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown text="Candidatos" right>
+          <b-dropdown-item>
+            <router-link to="/candidatos">Ver candidatos</router-link>
+          </b-dropdown-item>
+          <b-dropdown-item>
+            <router-link to="/candidato">Agregar candidato</router-link>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
+
+        <!--<b-nav-item href="#" disabled>Disabled</b-nav-item>-->
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" />
+        </b-nav-form>
+
+        <b-nav-item href="#"><i class="fas fa-cog"></i></b-nav-item>
+        <b-nav-item href="#" class="mar-rig-10px"><i class="fas fa-bell"></i></b-nav-item>
+
+        <img :src="$store.state.user.avatar" class="avatar" />
+
+        <b-nav-item-dropdown right>
+          <!-- Using button-content slot -->
+          <template slot="button-content">
+            <em v-text="$store.state.user.username"></em>
+          </template>
+          <b-dropdown-item href="#">Perfil</b-dropdown-item>
+          <b-dropdown-item @click="fnLogout">Salir</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+
+</div>

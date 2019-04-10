@@ -3,22 +3,9 @@
 
 <script>
   import { api_SaveCandidato, api_UpdateCandidato, api_GetCandidato, api_GetSkills } from '../../../utils/js/api';
+  import { bean_Persona, bean_Candidato } from '../../../utils/js/beans';
   import DatePicker from 'vue2-datepicker'; //https://github.com/mengxiong10/vue2-datepicker
   import { isEmpty } from '../../../utils/js/helper';
-
-  const beanPersona = () => {
-    return {
-      nombre: null, apellido_paterno: null, apellido_materno: null,
-      tel_celular: null, email: null
-    }
-  }
-  const beanCandidato = () => {
-    return {
-      pais: null, ciudad: null, codigo_postal: null, fecha_graduacion: null,
-      universidad: null, curriculum_vitae: null, cv_digital: null,
-      foto: null, skype: null,grado_estudios: null, grado_ingles: null, skills: []
-    }
-  }
 
   export default {
     name: 'Candidato',
@@ -26,8 +13,8 @@
     data () {
       return {
         impl: null,
-        persona: beanPersona(),
-        candidato: beanCandidato(),
+        persona: bean_Persona(),
+        candidato: bean_Candidato(),
         grupoSkills: [],
         skills: [],
         catalogs: {
@@ -41,7 +28,6 @@
       fnSkillsFiltered: function (idGrupoSkill) {
         return this.impl.fnSkillsFiltered(idGrupoSkill);
       },
-
       fnSaveCandidato: function () {
         this.impl.fnSaveCandidato();
       }
@@ -116,8 +102,8 @@
             "El candidato se ha guardo, ¿Quieres agregar un nuevo candidato?",
             null, null, true, function () {
               //Limpiamos el formulario
-              app.candidato = beanCandidato();
-              app.persona = beanPersona();
+              app.candidato = bean_Candidato();
+              app.persona = bean_Persona();
               app.skills.map(function (skill) { skill.nivel = 0; return skill; });
               setTimeout(() => { app.errors.clear(); }, 100);
             }, function () { app.$router.push('/candidatos'); });

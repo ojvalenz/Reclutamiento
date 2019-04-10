@@ -2,19 +2,10 @@
 <template src="./vacante.html"></template>
 
 <script>
-  import {api_GetSkills, api_GetCatalogsVacante, api_GetVacante,
-          api_SaveVacante, api_UpdateVacante} from '../../../utils/js/api';
+  import {api_GetSkills, api_GetCatalogsVacante, api_GetVacante, api_SaveVacante, api_UpdateVacante} from '../../../utils/js/api';
+  import { bean_Vacante, bean_Candidato } from '../../../utils/js/beans';
   import DatePicker from 'vue2-datepicker';
   import { isEmpty } from '../../../utils/js/helper';
-
-  const beanVacante = () => {
-    return {
-      nombre_corto: null, descripcion: null, id_tiempo_vacante: null,
-      id_tipo_contrato: null, ciudad: null, duracion: null, requerimientos: null,
-      costo_maximo: null, fecha_inicio: null, posiciones: null, prioridad: null,
-      comentarios: null, grupo_skills: []
-    }
-  }
 
   export default {
     name: 'Vacante',
@@ -22,7 +13,7 @@
     data () {
       return {
         impl: null,
-        vacante: beanVacante(),
+        vacante: bean_Vacante(),
         grupoSkills: [],
         skills: [],
         catalogs: {
@@ -37,7 +28,6 @@
       fnGetSkillsFiltered: function (idGrupoSkill) {
         return this.impl.fnGetSkillsFiltered(idGrupoSkill);
       },
-
       fnSaveVacante: function () {
         this.impl.fnSaveVacante();
       }
@@ -117,7 +107,7 @@
             "La vacante se ha guardo, ¿Quieres agregar una nueva vacante?",
             null, null, true, function () {
               //Limpiamos el formulario
-              app.vacante = beanVacante();
+              app.vacante = bean_Vacante();
               app.skills.map(function (skill) { skill.nivel = 0; return skill; });
               setTimeout(() => { app.errors.clear(); }, 100);
             }, function () { app.$router.push('/vacantes'); });
