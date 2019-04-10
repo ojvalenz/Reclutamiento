@@ -21,6 +21,7 @@
     components: { DatePicker },
     data () {
       return {
+        impl: null,
         vacante: beanVacante(),
         grupoSkills: [],
         skills: [],
@@ -33,86 +34,117 @@
       }
     },
     methods: {
-
-      fnGetSkills(functionOnFinish) {
-        const self = this;
-        api_GetSkills(this, true, function (response) {
-          self.grupoSkills = response.grupoSkills;
-          self.skills = response.skills;
-          functionOnFinish();
-        }, null);
-      },
-      fnGetCatalogsVacante() {
-        const self = this;
-        api_GetCatalogsVacante (this, true, function (response) {
-          self.catalogs.tiempoVacante = response.vacantes;
-          self.catalogs.tipoContrato = response.contratos;
-          if (!isEmpty(self.$route.params.id_vacante)) {
-            //Edicion de vacante, cargamos sus datos
-            self.fnGetVacante();
-          }
-        }, null);
+      fnGetSkillsFiltered: function (idGrupoSkill) {
+        return this.impl.fnGetSkillsFiltered(idGrupoSkill);
       },
 
-      fnGetVacante() {
-        const self = this;
-        api_GetVacante(this, this.$route.params.id_vacante, true, function (vacantes) {
-          if (vacantes && vacantes.vacante) {
-            self.vacante = vacantes.vacante;
-            if (self.vacante.skills && self.vacante.skills.length > 0) {
-              self.vacante.skills.forEach(function (cSkill) {
-                self.skills.find(function (skill) {
-                  return skill.id_skill == cSkill.id_skill;
-                }).nivel = cSkill.nivel;
-              });
-            }
-          }
-        }, null);
-      },
+      fnSaveVacante: function () {
+        this.impl.fnSaveVacante();
+      }
+    },
+    created() {
+      this.impl = new VacanteImpl(this);
+    }
+  }
 
-      loadData() { //Este metodo carga los catalogos y las entidades requeridas
-        this.fnGetSkills(this.fnGetCatalogsVacante);
-        //Se deben de cargar de un web service
-        this.catalogs.prioridad = [{ texto: "Alta", prioridad: 1 },{ texto: "Media", prioridad: 2 },{ texto: "Baja", prioridad: 3 },{ texto: "No Existe", prioridad: 4 }];
-        this.catalogs.nivelSkill = ["No aplica", "Principiante", "Intermedio", "Avanzado", "Experto"];
-      },
 
-      skillsFiltered: function (idGrupoSkill) {
-        return this.skills.filter(s => s.id_grupo_skill == idGrupoSkill);
-      },
+  function VacanteImpl(app) {
+    var self = this;
 
-      saveVacante: function () {
+    self.asignarFuncionalidades = function () {/* Declaracion de todas las funciones */
 
-        this.$validator.validate().then(valid => {
+      self.fnGetSkillsFiltered = function (idGrupoSkill) {
+        return app.skills.filter(s => s.id_grupo_skill == idGrupoSkill);
+      }
+
+      self.fnSaveVacante = function () {
+        app.$validator.validate().then(valid => {
           if (valid) {
-            const self = this;
-            this.vacante.skills = this.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
+            app.vacante.skills = this.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
             if (isEmpty(this.vacante.id_vacante)) {
-              api_SaveVacante(this, this.vacante, true, function (response) {
-
-                self.alert(self, self.Constants.DialogType.CONFIRM, self.Constants.Style.SUCCESS, "",
-                  "La vacante se ha guardo, ¿Quieres agregar una nueva vacante?",
-                  null, null, true, function () {
-                    //Limpiamos el formulario
-                    self.vacante = beanVacante();
-                    self.skills.map(function (skill) { skill.nivel = 0; return skill; });
-                    setTimeout(() => { self.errors.clear(); }, 100);
-                  }, function () { self.$router.push('/vacantes'); });
-
-              }, null);
+              self.apiSaveVacante();
             } else {
-              api_UpdateVacante(this, this.vacante, true, function (response) {
-                self.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
-              }, null);
+              self.apiUpdateVacante();
             }
           } else {
             this.notify(this, this.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
           }
         });
       }
-    },
-    mounted() {
-      this.loadData();
+    
     }
+
+
+    self.inicializarApis = function () {/* Inicializacion de todas los APIS Restfull */
+
+      self.apiGetSkills = function() {
+        api_GetSkills(app, true, function (response) {
+          app.grupoSkills = response.grupoSkills;
+          app.skills = response.skills;
+          self.apiGetCatalogsVacante();
+        }, null);
+      }
+
+      self.apiGetCatalogsVacante = function() {
+        api_GetCatalogsVacante(app, true, function (response) {
+          app.catalogs.tiempoVacante = response.vacantes;
+          app.catalogs.tipoContrato = response.contratos;
+          if (!isEmpty(app.$route.params.id_vacante)) {
+            //Edicion de vacante, cargamos sus datos
+            app.apiGetVacante();
+          }
+        }, null);
+      }
+
+      self.apiGetVacante = function() {
+        api_GetVacante(app, app.$route.params.id_vacante, true, function (vacantes) {
+          if (vacantes && vacantes.vacante) {
+            app.vacante = vacantes.vacante;
+            if (app.vacante.skills && app.vacante.skills.length > 0) {
+              app.vacante.skills.forEach(function (cSkill) {
+                app.skills.find(function (skill) {
+                  return skill.id_skill == cSkill.id_skill;
+                }).nivel = cSkill.nivel;
+              });
+            }
+          }
+        }, null);
+      }
+
+      self.apiSaveVacante = function () {
+        api_SaveVacante(app, app.vacante, true, function (response) {
+          app.alert(app, app.Constants.DialogType.CONFIRM, app.Constants.Style.SUCCESS, "",
+            "La vacante se ha guardo, ¿Quieres agregar una nueva vacante?",
+            null, null, true, function () {
+              //Limpiamos el formulario
+              app.vacante = beanVacante();
+              app.skills.map(function (skill) { skill.nivel = 0; return skill; });
+              setTimeout(() => { app.errors.clear(); }, 100);
+            }, function () { app.$router.push('/vacantes'); });
+
+        }, null);
+      }
+
+      self.apiUpdateVacante = function () {
+        api_UpdateVacante(app, app.vacante, true, function (response) {
+          app.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
+        }, null);
+      }
+      
+    }
+
+
+    self.loadData = function () {/* Carga de datos necesarios para la vista de la pagina */
+      self.apiGetSkills();
+      //Se deben de cargar de un web service
+      app.catalogs.prioridad = [{ texto: "Alta", prioridad: 1 }, { texto: "Media", prioridad: 2 }, { texto: "Baja", prioridad: 3 }, { texto: "No Existe", prioridad: 4 }];
+      app.catalogs.nivelSkill = ["No aplica", "Principiante", "Intermedio", "Avanzado", "Experto"];
+    }
+
+
+    self.asignarFuncionalidades();
+    self.inicializarApis();
+    self.loadData();
   }
+
 </script>

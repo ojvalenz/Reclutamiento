@@ -10,6 +10,7 @@
     name: 'Candidatos',
     data () {
       return {
+        impl: null,
         candidatos: [],
         table: null
       }
@@ -17,41 +18,76 @@
     computed: {
       candidatesSelected: {
         get() {
-          var x = this.candidatos.filter(candidato => candidato.selected);
-          return x;
+          return this.impl.fnGetCandidatesSelected();
         }, set(value) { }
       }
     },
     methods: {
-      fnLoadData() { //Este metodo carga los catalogos y las entidades requeridas
-        this.fnFindCandidatos();
-      },
-
-      fnFindCandidatos() { //Funcion para buscar los candidatos
-        const self = this;
-        api_GetCandidatos(this, true, function (candidatos) {
-          self.candidatos = candidatos.map(function (candidato) { candidato.selected = false; return candidato; });
-        }, null);
-      },
-
       fnSelectUnselectAll($event) { //Funcion para seleccionar o des-seleccionar todos los candidatos
-        this.candidatos.forEach(function (candidato) {
-          candidato.selected = $event.target.checked;
-        });
-        this.fnAjustarColumnas();
+        this.impl.fnSelectUnselectAll($event);
       },
-
       fnAjustarColumnas() {
-        let self = this;
-        setTimeout(function () {self.table.AjustarColumnas();}, 1);
+        this.impl.fnAjustarColumnas();
       }
     },
     beforeCreate() {
       require('../../../utils/js/plugins/fixedTable.js');//Plugin for fixed table header
     },
+    created() {
+      this.impl = new CandidatosImpl(this);
+    },
     mounted() {
-      this.fnLoadData();
-      this.table = $('table thead').FixMe();
+      this.impl.inicializarPlugins(); 
     }
+  }
+
+
+  function CandidatosImpl(app) {
+    var self = this;
+    self.table = null;
+
+    self.inicializarPlugins = function () {/* Inicializacion de plugins */
+      self.table = $('table thead').FixMe();
+    }
+
+    self.asignarFuncionalidades = function () {/* Declaracion de todas las funciones */
+
+      self.fnAjustarColumnas = function () {
+        setTimeout(function () { self.table.AjustarColumnas(); }, 1);
+      }
+
+      self.fnSelectUnselectAll = function($event) { //Funcion para seleccionar o des-seleccionar todos los candidatos
+        app.candidatos.forEach(function (candidato) {
+          candidato.selected = $event.target.checked;
+        });
+        self.fnAjustarColumnas();
+      }
+
+      self.fnGetCandidatesSelected = function () {
+        return app.candidatos.filter(candidato => candidato.selected);
+      }
+
+    }
+
+
+    self.inicializarApis = function () {/* Inicializacion de todas los APIS Restfull */
+
+      self.apiFindCandidatos = function() {
+        api_GetCandidatos(app, true, function (candidatos) {
+          app.candidatos = candidatos.map(function (candidato) { candidato.selected = false; return candidato; });
+        }, null);
+      }
+
+    }
+
+
+    self.loadData = function () {/* Carga de datos necesarios para la vista de la pagina */
+      self.apiFindCandidatos();
+    }
+
+
+    self.asignarFuncionalidades();
+    self.inicializarApis();
+    self.loadData();
   }
 </script>

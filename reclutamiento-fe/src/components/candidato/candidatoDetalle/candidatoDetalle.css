@@ -1,9 +1,10 @@
 .component-container {
   padding: 100px 120px !important;
+  background-color: #f8f9fa;
 }
 .container-details {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-radius: 5px;
+  background-color: white;
+  border-radius: 0px;
   padding: 15px;
 }
 
@@ -24,4 +25,56 @@
 .name {
   font-size: 14px;
   color: gray;
+}
+
+ul.horizontal-list {
+  margin-bottom: 0px;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+ul.horizontal-list li {
+  color: dimgrey;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+  ul.horizontal-list li.selected {
+    border-bottom: 2px solid #17a2b8;
+    padding-bottom: 16px;
+  }
+
+textarea {
+  border: 1px solid white;
+  border-radius: 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer-actions {
+  padding: 15px;
+  height: 30%;
+  padding: 8px 10px;
+}
+
+.notes-container {
+  padding: 40px 0px 0px 50px;
+}
+.note {
+  background-color: #ffffff;
+  width: 100%;
+  height: auto;
+  min-height: 75px;
+  padding: 10px 10px 0px 10px;
+  color: #4e4e4e;
+}
+.note-actions {
+  float: right;
+  margin-top: -30px;
+  margin-right: 10px;
+  color: gray;
+}
+
+.notes-container .img-letter {
+  width: 35px;
+  height: 35px;
+  font-size: 22px;
 }

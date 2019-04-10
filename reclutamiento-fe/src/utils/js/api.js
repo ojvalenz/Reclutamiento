@@ -1,4 +1,9 @@
 
+export const api_Login = (app, parameters, functionOnSuccess, functionOnError) => {
+  app.$http(app, '/login', app.Constants.HTTPmethod.POST, parameters, app.Constants.ContentType.URL, app.Constants.ResponseType.JSON,
+    functionOnSuccess, true, functionOnError, true);
+}
+
 export const api_GetSkills = (app, showLoading, functionOnSuccess, functionOnError) => {
   app.$http(app, '/skills', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.URL, app.Constants.ResponseType.JSON,
     functionOnSuccess, showLoading, functionOnError, true);

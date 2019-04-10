@@ -125,7 +125,7 @@
 
             <b-collapse :id="'collapse' + index">
               <div class="collapse-body">
-                <div v-for="skill in skillsFiltered(grupo.id_grupo_skill)">
+                <div v-for="skill in fnSkillsFiltered(grupo.id_grupo_skill)">
                   <h6 v-text="skill.nombre"></h6>
                   <v-slider label="Experiencia"
                   v-model="skill.nivel"
@@ -145,7 +145,7 @@
       <div class="col-sm-12" style="display: flex;">
         <hr style="margin-left: 0px;" class="mar-rig-10px">
         <router-link to="/candidatos" class="btn btn-secondary mar-rig-10px w-120px">Cancelar</router-link>
-        <button @click="saveCandidato" type="button" class="btn btn-info w-120px">Guardar</button>
+        <button @click="fnSaveCandidato" type="button" class="btn btn-info w-120px">Guardar</button>
       </div>
     </div>
 

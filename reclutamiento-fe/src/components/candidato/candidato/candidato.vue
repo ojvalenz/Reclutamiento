@@ -25,6 +25,7 @@
     components: { DatePicker },
     data () {
       return {
+        impl: null,
         persona: beanPersona(),
         candidato: beanCandidato(),
         grupoSkills: [],
@@ -37,81 +38,113 @@
       }
     },
     methods: {
-
-      fnGetSkills() {
-        const self = this;
-        api_GetSkills(this, true, function (response) {
-          self.grupoSkills = response.grupoSkills;
-          self.skills = response.skills;
-
-          if (!isEmpty(self.$route.params.id_candidato)) {
-            //Edicion de usuario, cargamos sus datos
-            self.fnGetCandidato();
-          }
-        }, null);
+      fnSkillsFiltered: function (idGrupoSkill) {
+        return this.impl.fnSkillsFiltered(idGrupoSkill);
       },
 
-      fnGetCandidato() {
-        const self = this;
-        api_GetCandidato(this, this.$route.params.id_candidato, true, function (candidatos) {
+      fnSaveCandidato: function () {
+        this.impl.fnSaveCandidato();
+      }
+    },
+    created() {
+      this.impl = new CandidatoImpl(this);
+    }
+  }
+
+
+  function CandidatoImpl(app) {
+    var self = this;
+
+    self.asignarFuncionalidades = function () {/* Declaracion de todas las funciones */
+
+      self.fnSkillsFiltered = function (idGrupoSkill) {
+        return app.skills.filter(s => s.id_grupo_skill == idGrupoSkill);
+      }
+
+      self.fnSaveCandidato = function () {
+        app.$validator.validate().then(valid => {
+          if (valid) {
+            app.candidato.skills = app.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
+            const parameters = { candidato: app.candidato, persona: app.persona };
+            if (isEmpty(app.candidato.id_candidato)) {
+              self.apiSaveCandidato(parameters);
+            } else {
+              self.apiUpdateCandidato(parameters);
+            }
+          } else {
+            app.notify(app, app.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
+          }
+        });
+      }
+
+    }
+
+
+    self.inicializarApis = function () {/* Inicializacion de todas los APIS Restfull */
+
+      self.apiGetSkills = function () {
+        api_GetSkills(app, true, function (response) {
+          app.grupoSkills = response.grupoSkills;
+          app.skills = response.skills;
+
+          if (!isEmpty(app.$route.params.id_candidato)) {
+            //Edicion de usuario, cargamos sus datos
+            self.apiGetCandidato();
+          }
+        }, null);
+      }
+
+      self.apiGetCandidato = function() {
+        api_GetCandidato(app, app.$route.params.id_candidato, true, function (candidatos) {
           if (candidatos && candidatos.length > 0) {
-            self.candidato = candidatos[0];
-            self.persona = candidatos[0].persona;
-            if (self.candidato.skills && self.candidato.skills.length > 0) {
-              self.candidato.skills.forEach(function (cSkill) {
-                self.skills.find(function (skill) {
+            app.candidato = candidatos[0];
+            app.persona = candidatos[0].persona;
+            if (app.candidato.skills && app.candidato.skills.length > 0) {
+              app.candidato.skills.forEach(function (cSkill) {
+                app.skills.find(function (skill) {
                   return skill.id_skill == cSkill.id_skill;
                 }).nivel = cSkill.nivel;
               });
             }
           }
         }, null);
-      },
-
-      loadData() { //Este metodo carga los catalogos y las entidades requeridas
-        this.fnGetSkills();
-        //Se deben de cargar de un web service
-        this.catalogs.estudios = [{ nivel: "Preparatoria", valor: 1 }, { nivel: "Licenciatura", valor: 2 }, { nivel: "Maestria", valor: 3 }, { nivel: "Doctorado", valor: 4 }];
-        this.catalogs.ingles = [{ nivel: "Basico", valor: 1 }, { nivel: "Intermedio", valor: 2 }, { nivel: "Avanzado", valor: 3 }];
-        this.catalogs.nivelSkill = ["No lo conosco", "Principiante", "Intermedio", "Avanzado", "Experto"];
-      },
-
-      skillsFiltered: function (idGrupoSkill) {
-        return this.skills.filter(s => s.id_grupo_skill == idGrupoSkill);
-      },
-
-      saveCandidato: function () {
-
-        this.$validator.validate().then(valid => {
-          if (valid) {
-            const self = this;
-            this.candidato.skills = this.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
-            const parameters = { candidato: this.candidato, persona: this.persona };
-            if (isEmpty(this.candidato.id_candidato)) {
-              api_SaveCandidato(this, parameters, true, function (response) {
-                self.alert(self, self.Constants.DialogType.CONFIRM, self.Constants.Style.SUCCESS, "",
-                  "El candidato se ha guardo, ¿Quieres agregar un nuevo candidato?",
-                  null, null, true, function () {
-                    //Limpiamos el formulario
-                    self.candidato = beanCandidato();
-                    self.persona = beanPersona();
-                    self.skills.map(function (skill) { skill.nivel = 0; return skill; });
-                    setTimeout(() => { self.errors.clear(); }, 100);
-                  }, function () { self.$router.push('/candidatos'); });
-              }, null);
-            } else {
-              api_UpdateCandidato(this, parameters, true, function (response) {
-                self.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
-              }, null);
-            }
-          } else {
-            this.notify(this, this.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
-          }
-        });
       }
-    },
-    mounted() {
-      this.loadData();
+
+      self.apiSaveCandidato = function (candidato) {
+        api_SaveCandidato(app, candidato, true, function (response) {
+          app.alert(app, app.Constants.DialogType.CONFIRM, app.Constants.Style.SUCCESS, "",
+            "El candidato se ha guardo, ¿Quieres agregar un nuevo candidato?",
+            null, null, true, function () {
+              //Limpiamos el formulario
+              app.candidato = beanCandidato();
+              app.persona = beanPersona();
+              app.skills.map(function (skill) { skill.nivel = 0; return skill; });
+              setTimeout(() => { app.errors.clear(); }, 100);
+            }, function () { app.$router.push('/candidatos'); });
+        }, null);
+      }
+
+      self.apiUpdateCandidato = function (candidato) {
+        api_UpdateCandidato(app, candidato, true, function (response) {
+          app.notify(app, app.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
+        }, null);
+      }
+
     }
+
+
+    self.loadData = function () {/* Carga de datos necesarios para la vista de la pagina */
+      self.apiGetSkills();
+      //Se deben de cargar de un web service
+      app.catalogs.estudios = [{ nivel: "Preparatoria", valor: 1 }, { nivel: "Licenciatura", valor: 2 }, { nivel: "Maestria", valor: 3 }, { nivel: "Doctorado", valor: 4 }];
+      app.catalogs.ingles = [{ nivel: "Basico", valor: 1 }, { nivel: "Intermedio", valor: 2 }, { nivel: "Avanzado", valor: 3 }];
+      app.catalogs.nivelSkill = ["No lo conosco", "Principiante", "Intermedio", "Avanzado", "Experto"];
+    }
+
+
+    self.asignarFuncionalidades();
+    self.inicializarApis();
+    self.loadData();
   }
+
 </script>

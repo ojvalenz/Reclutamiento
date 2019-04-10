@@ -1,9 +1,10 @@
 <div class="component-container">
   <div class="row">
+    <!-- ************************************ INICIA INFORMACION DEL CANDIDATO **********************-->
     <div class="col-sm-12 col-md-4">
       <div class="row container-details">
         <div class="col-sm-12">
-          <div v-text="getFirstLetterName()" class="img-letter"></div>
+          <div v-text="fnGetFirstLetter(persona.nombre)" class="img-letter"></div>
           <span v-text="persona.email" class="fs-17px"></span><br />
           <span v-text="persona.nombre + ' ' + persona.apellido_paterno + ' ' + persona.apellido_materno" class="name"></span>
         </div>
@@ -57,7 +58,7 @@
                 <i class="fas fa-check-circle color-auriz mar-rig-10px left"></i>
                 <span style="display: grid;">
                   <strong><span v-text="groupName"></span></strong>
-                  
+
                   <template v-for="(skill, index) in skills">
                     <span v-text="skill.nombre"></span>
                   </template>
@@ -65,14 +66,87 @@
                 </span>
               </p>
             </template>
-            
+
           </div>
 
         </div>
       </div>
     </div>
+    <!-- ************************************ TERMINA INFORMACION DEL CANDIDATO **********************-->
 
-    <div class="col-sm-12 col-md-8">
+    <!-- ************************************ INICIA STREAM **********************-->
+    <div class="col-sm-12 col-md-8" style="padding-left: 60px;">
+      <div class="row container-details pad-0">
+        <div class="col-sm-12 pad-0">
+          <ul class="horizontal-list">
+            <li class="selected"><i class="fas fa-external-link-alt"></i> Nueva nota</li>
+            <li><i class="fas fa-envelope"></i> Email</li>
+            <li><i class="fas fa-phone"></i> Llamada</li>
+            <li><i class="fas fa-paperclip"></i> Asignar vacante</li>
+          </ul>
+          <div style="height: 170px;">
+            <div class="h-100"><!--Container Nueva nota-->
+              <textarea class="form-control no-border" style="height: 70%;" placeholder="Agrega una nueva nota..."></textarea>
+              <div class="footer-actions">
+                <button style="float: right;" type="button" class="btn btn-info">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row pad-0">
+        <div class="col-sm-12 pad-0">
+          <ul class="horizontal-list">
+            <li class="selected">Notas</li>
+            <li>Emails</li>
+            <li>Llamadas</li>
+          </ul>
+        </div>
+
+        <div class="col-sm-12 pad-0">
+          <div class="notes-container">
+            <div class="note">
+              <div v-text="fnGetFirstLetter('Oscar')" class="img-letter"></div>
+              <p class="mar-bot-5px">Mi primer not acerca de este usuario</p>
+              <p class="c-gray">8 Abril del 2019</p>
+              <div class="note-actions">
+                <i class="fas fa-trash-alt"></i>
+              </div>
+            </div>
+            <div class="note">
+              <div v-text="fnGetFirstLetter('Hector')" class="img-letter"></div>
+              <p class="mar-bot-5px">Mi primer not acerca de este usuario</p>
+              <p class="c-gray">8 Abril del 2019</p>
+              <div class="note-actions">
+                <i class="fas fa-trash-alt"></i>
+              </div>
+            </div>
+
+            <div class="note">
+              <div v-text="fnGetFirstLetter('Mario')" class="img-letter"></div>
+              <p class="mar-bot-5px">Mi Segunda nota acerca de este usuario</p>
+              <p class="c-gray">7 Abril del 2019</p>
+              <div class="note-actions">
+                <i class="fas fa-trash-alt"></i>
+              </div>
+            </div>
+            <div class="note">
+              <div v-text="fnGetFirstLetter('Karla')" class="img-letter"></div>
+              <p class="mar-bot-5px">Mi tercer not acerca de este usuario</p>
+              <p class="c-gray">6 Abril del 2019</p>
+              <div class="note-actions">
+                <i class="fas fa-trash-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
+    <!-- ************************************ TERMINA STREAM **********************-->
+
   </div>
 </div>
