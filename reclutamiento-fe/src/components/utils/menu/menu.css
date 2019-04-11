@@ -1,0 +1,31 @@
+.navbar {
+  background-color: #2e3f4f;
+}
+  .navbar .logo {
+    width: 40px;
+    padding-top: 0px;
+  }
+
+.navbar a {
+  color: white !important;
+}
+
+  .navbar .dropdown-menu a {
+    color: black !important;
+  }
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+  border-radius: 20px;
+}
+
+.logout .btn-link {
+  color: white;
+}
+
+  .logout .btn-link:hover {
+    color: white;
+    text-decoration: none !important;
+  }

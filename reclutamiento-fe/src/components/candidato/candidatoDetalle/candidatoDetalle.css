@@ -1,0 +1,86 @@
+.component-container {
+  padding: 100px 120px !important;
+  background-color: #f8f9fa;
+}
+.container-details {
+  background-color: white;
+  border-radius: 0px;
+  padding: 15px;
+}
+
+.img-letter {
+  text-align: center;
+  vertical-align: middle;
+  background-color: #17a2b8;
+  height: 50px;
+  width: 50px;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 30px;
+  float: left;
+  margin-right: 15px;
+}
+
+.name {
+  font-size: 14px;
+  color: gray;
+}
+
+ul.horizontal-list {
+  margin-bottom: 0px;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+ul.horizontal-list li {
+  color: dimgrey;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+  ul.horizontal-list li.selected {
+    border-bottom: 2px solid #17a2b8;
+    padding-bottom: 16px;
+  }
+
+textarea {
+  border: 1px solid white;
+  border-radius: 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer-actions {
+  padding: 15px;
+  height: 30%;
+  padding: 8px 10px;
+}
+
+.notes-container {
+  padding: 40px 0px 0px 50px;
+}
+.note {
+  background-color: #ffffff;
+  width: 100%;
+  height: auto;
+  min-height: 75px;
+  padding: 10px 10px 0px 10px;
+  color: #4e4e4e;
+  word-break: break-all;
+  display: inline-flex;
+  position: relative;
+  margin-bottom: 15px;
+}
+.note-actions {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  color: gray;
+  cursor: pointer;
+}
+
+.notes-container .img-letter {
+  width: 35px;
+  height: 35px;
+  font-size: 22px;
+  min-width: 35px;
+}

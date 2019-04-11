@@ -1,0 +1,142 @@
+<div class="container pad-top-60px">
+
+  <form>
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <h5 class="title">Información General</h5>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.nombre_corto" type="text" placeholder="Nombre"
+                 name="nombre" v-validate="'required'" :class="{'is-danger': errors.has('nombre'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.descripcion" type="text" placeholder="Descripcion"
+                 name="descripcion" v-validate="'required'" :class="{'is-danger': errors.has('descripcion'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <b-form-select v-model="vacante.id_tiempo_vacante" :options="catalogs.tiempoVacante" text-field="tiempo_vacante" value-field="id_tiempo_vacante"
+                         name="tiempo_vacante" v-validate="'required'" :class="{'is-danger': errors.has('tiempo_vacante')}">
+            <template slot="first">
+              <option :value="null" disabled>-- Tiempo Vacante --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <b-form-select v-model="vacante.id_tipo_contrato" :options="catalogs.tipoContrato" text-field="tipo_contrato" value-field="id_tipo_contrato"
+                         name="id_tipo_contrato" v-validate="'required'" :class="{'is-danger': errors.has('id_tipo_contrato')}">
+            <template slot="first">
+              <option :value="null" disabled>-- Tiempo Contrato --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.ciudad" type="text" placeholder="Ciudad"
+                 name="ciudad" v-validate="'required'" :class="{'is-danger': errors.has('ciudad'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.duracion" type="text" placeholder="Duracion" class="form-control"
+                 name="duracion" v-validate="'required'" :class="{'is-danger': errors.has('duracion'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.requerimientos" type="text" placeholder="Requerimientos"
+                 name="requerimientos" v-validate="'required'" :class="{'is-danger': errors.has('requerimientos'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.costo_maximo" type="text" placeholder="Costo Maximo"
+                 name="costo_maximo" v-validate="'required'" :class="{'is-danger': errors.has('costo_maximo'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <date-picker v-model="vacante.fecha_inicio" format="YYYY-MM-DD" value-type="format" lang="es" input-class="form-control" placeholder="Fecha Inicio"
+                       name="fecha_inicio" v-validate="'required'" :class="{'is-danger': errors.has('fecha_inicio'), 'w-100': true}"></date-picker>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.posiciones" type="text" placeholder="Posiciones"
+                 name="posiciones" v-validate="'required'" :class="{'is-danger': errors.has('posiciones'), 'form-control':true }">
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <b-form-select v-model="vacante.prioridad" :options="catalogs.prioridad" text-field="texto" value-field="prioridad"
+                         name="prioridad" v-validate="'required'" :class="{'is-danger': errors.has('prioridad')}">
+            <template slot="first">
+              <option :value="null" disabled>-- Prioridad --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <b-form-group>
+          <input v-model="vacante.comentarios" type="text" placeholder="Comentarios" class="form-control">
+        </b-form-group>
+      </div>
+
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <h5 class="title">Skills</h5>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <template v-for="(grupo, index) in grupoSkills">
+          <b-card class="text-left">
+            <b-card-header v-b-toggle="'collapse' + index" header-tag="header" class="p-1" role="tab">
+              <h6 v-text="grupo.nombre" class="collapse-header"></h6>
+            </b-card-header>
+
+            <b-collapse :id="'collapse' + index">
+              <div class="collapse-body">
+                <div v-for="skill in fnGetSkillsFiltered(grupo.id_grupo_skill)">
+                  <h6 v-text="skill.nombre"></h6>
+                  <v-slider label="Experiencia"
+                  v-model="skill.nivel"
+                  :tick-labels="catalogs.nivelSkill" :max="4" step="1"
+                  ticks="always" color="#17a2b8" height="15px" tick-size="1"></v-slider>
+
+                </div>
+              </div>
+            </b-collapse>
+          </b-card>
+        </template>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-12" style="display: flex;">
+        <hr style="margin-left: 0px;" class="mar-rig-10px">
+        <router-link to="/vacantes" class="btn btn-secondary mar-rig-10px w-120px">Cancelar</router-link>
+        <button @click="fnSaveVacante" type="button" class="btn btn-info w-120px">Guardar</button>
+      </div>
+    </div>
+
+    <br />
+    <br />
+  </form>
+</div>

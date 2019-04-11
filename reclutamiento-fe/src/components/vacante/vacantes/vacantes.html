@@ -1,0 +1,75 @@
+<div class="component-container">
+  <div class="row mar-bot-20px">
+    <div class="col-sm-12 display-inline">
+      <h3 class="title">Vacantes</h3>
+      <div class="f-right">
+        <router-link to="/vacante" class="btn btn-narange">Agregar vacante</router-link>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row mar-top-20px">
+    <div class="col-sm-12 col-md-2">
+      <p><strong>Filtros</strong></p>
+      <p>Todos las vacantes</p>
+      <a class="link"><i class="fas fa-plus"></i> Agregar Filtro</a>
+    </div>
+
+    <div class="col-sm-12 col-md-10">
+      <table class="table table-advance table-hover">
+        <thead>
+          <tr>
+            <th class="w-40px pad-top-20px">
+              <label class="checkContainer">
+                <input @click="fnSelectUnselectAll($event)" type="checkbox"><span class="checkmark" style="top: -8px;"></span>
+              </label>
+            </th>
+            <template v-if="vacantesSelected.length > 0">
+              <th colspan="6" class="actions">
+                <span @click=""
+                      ><i class="fas fa-arrow-right"></i> Asignar</span>
+                <span>
+                  <router-link v-if="vacantesSelected.length == 1"
+                               :to="'/vacante/' + vacantesSelected[0].id_vacante"><i class="fas fa-edit"></i>Editar</router-link>
+                </span>
+                <span><i class="fas fa-trash-alt"></i> Eliminar</span>
+
+              </th>
+            </template>
+            <template v-else>
+              <th>Vacante</th>
+              <th>Requerimientos</th>
+              <th>Ciudad</th>
+              <th>Fecha Inicio</th>
+              <th>Ciudad</th>
+              <th>Duracion</th>
+            </template>
+          </tr>
+        </thead>
+        <tbody v-if="vacantes.length">
+          <tr v-for="(vacante, index) in vacantes">
+            <td>
+              <label class="checkContainer">
+                <input v-model="vacante.selected" @click="fnAjustarColumnas" type="checkbox"><span class="checkmark"></span>
+              </label>
+            </td>
+            <td v-text="vacante.nombre_corto"></td>
+            <td v-text="vacante.descripcion"></td>
+            <td v-text="vacante.ciudad"></td>
+            <td v-text="vacante.fecha_inicio ? vacante.fecha_inicio.split('T')[0] : ''"></td>
+            <td v-text="vacante.ciudad"></td>
+            <td v-text="vacante.duracion"></td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr> <td colspan="7" align="center"><p>No hay vacantes para mostrar</p></td> </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+
