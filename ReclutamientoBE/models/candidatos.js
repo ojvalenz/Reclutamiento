@@ -16,10 +16,7 @@ const tbl_candidatos = helper.ColumnSet([
     'skype',
     'grado_estudios',
     'grado_ingles',
-    {
-        name: 'skills',
-        mod: ':json'
-    }, "sueldo_actual",
+    /*, "sueldo_actual",
     "prestaciones_actual",
     "expectativa_actual",
     "fecha_actualizacion",
@@ -37,7 +34,7 @@ const tbl_candidatos = helper.ColumnSet([
     "dependientes_economicos",
     "ingresos_extras",
     "ingreso_extra_fam",
-    "proceso_reclutamiento",
+    "proceso_reclutamiento",*/
 ], {
     table: 'candidatos'
 });
@@ -72,11 +69,21 @@ function getCandidato(id_candidato) {
 }
 
 function insertCandidato(candidato, persona) {
+    if (persona.pass == undefined || persona.pass == null || persona.pass === '') {
+        persona.pass = 'Pass1234';
+    }
+
     return db.tx(tx => {
         return tx.map(model_persona.insertPersona(persona), [], persona => {
             candidato.id_persona = persona.id_persona;
-            let query = helper.insert(candidato, tbl_candidatos);
-            return tx.none(query)
+            let query = helper.insert(candidato, tbl_candidatos) + ' RETURNING id_candidato;';
+            return tx.map(query, null, c => {
+                candidato.skills.forEach(skill => Object.assign(skill, {
+                    id_candidato: c.id_candidato
+                }))
+                let query_skills = helper.insert(candidato.skills, ['id_candidato', 'id_skill', 'nivel'], 'skills_candidatos');
+                return tx.none(query_skills);
+            })
         }).then(tx.batch);
     });
 }

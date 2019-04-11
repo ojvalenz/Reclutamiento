@@ -15,17 +15,17 @@ const tbl_vacantes = helper.ColumnSet([
     'posiciones',
     'prioridad',
     'comentarios',
-    {
-        name: 'grupo_skills',
-        cast: 'int[]'
-    },
-    "id_estatus",
-    "id_reclutador_creacion",
-    "id_reclutador_asignado",
-    "tarifa",
-    "id_empresa_contratante",
-    "trabajando_actualmente",
-    "empresa_empleadora"
+    /* {
+         name: 'grupo_skills',
+         cast: 'int[]'
+     },
+     "id_estatus",
+     "id_reclutador_creacion",
+     "id_reclutador_asignado",
+     "tarifa",
+     "id_empresa_contratante",
+     "trabajando_actualmente",
+     "empresa_empleadora"*/
 ], {
     table: 'vacantes'
 });
@@ -42,9 +42,20 @@ function getVacante(id_vacante) {
     return db.one(query);
 };
 
-function insertVacante(vacante) {
-    let query = helper.insert(vacante, tbl_vacantes);
-    return db.none(query);
+function insertVacante(vacante, skills) {
+    let query = helper.insert(vacante, tbl_vacantes) + ' RETURNING id_vacante;';
+
+    return db.tx(tx => {
+        return tx.map(query, null, vacante => {
+            skills.forEach(skill => {
+                Object.assign(skill, {
+                    id_vacante: vacante.id_vacante
+                })
+            });
+            let query_skills = helper.insert(skills, ['id_vacante', 'id_skill', 'nivel'], 'skills_vacantes')
+            return tx.none(query_skills);
+        }).then(tx.batch)
+    })
 };
 
 function updateVacante(vacante) {

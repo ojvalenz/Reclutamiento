@@ -7,8 +7,7 @@ const tbl_personas = new helper.ColumnSet([
     'apellido_paterno',
     'apellido_materno',
     'tel_celular',
-    'email',
-    'pass'
+    'email'
 ], {
     table: 'personas'
 });
@@ -38,11 +37,30 @@ function deletePersona(id_persona) {
     return query
 }
 
+function validarPersona(email) {
+    let query = new PQ('SELECT EXITS(SELECT email FROM personas WHERE email = $1);', [email]);
+    return query;
+}
+
+function getPassword(id_persona) {
+    let query = new PQ('SELECT pass FROM personas WHERE id_persona = $1', [id_persona]);
+
+    return db.one(query);
+}
+
+function changePassword(pass_change) {
+    let query = new PQ('UPDATE personsa SET pass = ${new_pass} WHERE id_persona = ${id_persona} AND pass = ${old_pass}', pass_change);
+
+    return db.task(query);
+}
 
 module.exports = {
     getPersonas,
     getPersona,
     insertPersona,
     updatePersona,
-    deletePersona
+    deletePersona,
+    validarPersona,
+    getPassword,
+    changePassword
 }

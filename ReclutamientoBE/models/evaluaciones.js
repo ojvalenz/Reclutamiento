@@ -4,14 +4,12 @@ const helper = require("pg-promise")().helpers;
 const persona = require("./personas");
 
 const tbl_evaluaciones = helper.ColumnSet(
-  ["id_persona", "id_vacante", "fecha_evaluacion:raw", "veredicto"],
-  {
+  ["id_persona", "id_vacante", "fecha_evaluacion:raw", "veredicto"], {
     table: "evaluaciones"
   }
 );
 const tbl_evaluaciones_candidatos = helper.ColumnSet(
-  ["id_evaluacion", "id_candidato", "id_skill", "calificacion", "comentarios"],
-  {
+  ["id_evaluacion", "id_candidato", "id_skill", "calificacion", "comentarios"], {
     table: "evaluaciones_candidatos"
   }
 );
@@ -61,8 +59,7 @@ function insertEvaluacion(obj) {
 
 function getEvaluaciones() {
   return db.task(t => {
-    return t
-      .map("SELECT * FROM evaluaciones;", null, evaluacion => {
+    return t.map("SELECT * FROM evaluaciones;", null, evaluacion => {
         return t
           .batch([
             t.one(persona.getPersona(evaluacion.id_persona)),
