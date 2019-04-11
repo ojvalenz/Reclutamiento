@@ -2,7 +2,7 @@
 <template src="./candidatoDetalle.html"></template>
 
 <script>
-  import { api_GetSkills, api_GetCandidato } from '../../../utils/js/api';
+  import { api_GetSkills, api_GetCandidato, api_SaveNota, api_GetNotas, api_DeleteNota } from '../../../utils/js/api';
   import { isEmpty } from '../../../utils/js/helper';
 
   export default {
@@ -14,11 +14,19 @@
         candidato: new Object(),
         grupoSkills: [],
         skills: [],
+        notas: [],
+        nota: ""
       }
     },
     methods: {
       fnGetFirstLetter(string) {
         return this.impl.fnGetFirstLetter(string);
+      },
+      fnSaveNota() {
+        return this.impl.fnSaveNota();
+      },
+      apiDeleteNota(nota, index){
+        this.impl.apiDeleteNota(nota, index);
       }
     },
     created() {
@@ -36,6 +44,14 @@
         return string ? string.charAt(0).toUpperCase() : '';
       }
 
+      self.fnSaveNota = function () {
+        if (!isEmpty(app.nota)) {
+          self.apiSaveNota(app.nota);
+        } else {
+          app.notify(app, app.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
+        }
+
+      }
     }
 
 
@@ -83,11 +99,30 @@
         }, null);
       }
 
+      self.apiGetNotas = function () {
+        api_GetNotas(app, true, function (notas) {
+          app.notas = [];// Cuando este el servicio de GetNotas se debe de cambiar a [app.notas = notas]
+        }, null);
+      }
+
+      self.apiSaveNota = function () {
+        api_SaveNota(app, app.nota, true, function (nota) {
+          app.notas.unshift({ nota: app.nota, user: "Oscar", date: new Date() });
+          app.nota = "";
+        }, null);
+      }
+
+      self.apiDeleteNota = function (nota, index) {
+        api_DeleteNota(app, nota, true, function (nota) {
+          app.notas.splice(index, 1);
+        }, null);
+      }
     }
 
 
     self.loadData = function () {/* Carga de datos necesarios para la vista de la pagina */
       self.apiGetSkills();
+      self.apiGetNotas();
     }
 
     self.asignarFuncionalidades();

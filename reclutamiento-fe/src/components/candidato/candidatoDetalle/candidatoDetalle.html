@@ -86,9 +86,9 @@
           </ul>
           <div style="height: 170px;">
             <div class="h-100"><!--Container Nueva nota-->
-              <textarea class="form-control no-border" style="height: 70%;" placeholder="Agrega una nueva nota..."></textarea>
+              <textarea v-model="nota" class="form-control no-border" style="height: 70%;" placeholder="Agrega una nueva nota..."></textarea>
               <div class="footer-actions">
-                <button style="float: right;" type="button" class="btn btn-info">Guardar</button>
+                <button @click="fnSaveNota" type="button" class="btn btn-info f-right">Guardar</button>
               </div>
             </div>
           </div>
@@ -107,39 +107,17 @@
 
         <div class="col-sm-12 pad-0">
           <div class="notes-container">
-            <div class="note">
-              <div v-text="fnGetFirstLetter('Oscar')" class="img-letter"></div>
-              <p class="mar-bot-5px">Mi primer not acerca de este usuario</p>
-              <p class="c-gray">8 Abril del 2019</p>
+            <div v-for="(nota, index) in notas" class="note">
+              <div v-text="fnGetFirstLetter(nota.user)" class="img-letter"></div>
+              <div>
+                <p v-html="nota.nota" class="mar-bot-5px"></p>
+                <p v-text="nota.date" class="c-gray"></p>
+              </div>
               <div class="note-actions">
-                <i class="fas fa-trash-alt"></i>
+                <i @click="apiDeleteNota(nota, index)" class="fas fa-trash-alt"></i>
               </div>
             </div>
-            <div class="note">
-              <div v-text="fnGetFirstLetter('Hector')" class="img-letter"></div>
-              <p class="mar-bot-5px">Mi primer not acerca de este usuario</p>
-              <p class="c-gray">8 Abril del 2019</p>
-              <div class="note-actions">
-                <i class="fas fa-trash-alt"></i>
-              </div>
-            </div>
-
-            <div class="note">
-              <div v-text="fnGetFirstLetter('Mario')" class="img-letter"></div>
-              <p class="mar-bot-5px">Mi Segunda nota acerca de este usuario</p>
-              <p class="c-gray">7 Abril del 2019</p>
-              <div class="note-actions">
-                <i class="fas fa-trash-alt"></i>
-              </div>
-            </div>
-            <div class="note">
-              <div v-text="fnGetFirstLetter('Karla')" class="img-letter"></div>
-              <p class="mar-bot-5px">Mi tercer not acerca de este usuario</p>
-              <p class="c-gray">6 Abril del 2019</p>
-              <div class="note-actions">
-                <i class="fas fa-trash-alt"></i>
-              </div>
-            </div>
+            
           </div>
         </div>
 

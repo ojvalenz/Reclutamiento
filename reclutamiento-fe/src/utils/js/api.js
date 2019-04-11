@@ -48,3 +48,20 @@ export const api_UpdateVacante = (app, vacante, showLoading, functionOnSuccess, 
   app.$http(app, '/vacantes', app.Constants.HTTPmethod.PUT, vacante, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
     functionOnSuccess, showLoading, functionOnError, true);
 }
+
+export const api_SaveNota = (app, nota, showLoading, functionOnSuccess, functionOnError) => {
+  //Se debe ajustar este servicio para llamar el endpoint de GUARDAR NOTA
+  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+    functionOnSuccess, showLoading, functionOnError, true);
+}
+export const api_GetNotas = (app, showLoading, functionOnSuccess, functionOnError) => {
+  //Se debe ajustar este servicio para llamar el endpoint de RECUPERAR NOTAS
+  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+    functionOnSuccess, showLoading, functionOnError, true);
+}
+export const api_DeleteNota = (app, nota, showLoading, functionOnSuccess, functionOnError) => {
+  //Se debe ajustar este servicio para llamar el endpoint de ELIMINAR NOTA
+  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+    functionOnSuccess, showLoading, functionOnError, true);
+}
+
