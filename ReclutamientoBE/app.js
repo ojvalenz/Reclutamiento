@@ -10,6 +10,7 @@ var skillsRouter = require("./routes/skills");
 var candidatosRouter = require("./routes/candidatos");
 var evaluacionesRouter = require("./routes/evaluaciones");
 var utilidadesRouter = require("./routes/utilidades");
+var notasRouter = require('./routes/notas');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use("/skills", skillsRouter);
 app.use("/candidatos", candidatosRouter);
 app.use("/evaluaciones", evaluacionesRouter);
 app.use("/utilidades", utilidadesRouter);
+app.use('/notas', notasRouter);
 
 app.locals.respuesta = function (st, msj, dt) {
     let estatus;

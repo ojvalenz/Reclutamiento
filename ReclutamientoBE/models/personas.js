@@ -17,7 +17,7 @@ function getPersonas() {
 }
 
 function getPersona(id_persona) {
-    let query = new PQ('SELECT * FROM personas WHERE id_persona = $1;');
+    let query = new PQ('SELECT id_persona, nombre, apellido_paterno, apellido_materno, id_rol, tel_celular, email, id_empresa, ubicacion FROM personas WHERE id_persona = $1;');
     query.values = [id_persona];
     return query;
 }
@@ -49,9 +49,9 @@ function getPassword(id_persona) {
 }
 
 function changePassword(pass_change) {
-    let query = new PQ('UPDATE personsa SET pass = ${new_pass} WHERE id_persona = ${id_persona} AND pass = ${old_pass}', pass_change);
-
-    return db.task(query);
+    return db.task(t => {
+        return t.none('UPDATE personas SET pass = ${new_password} WHERE id_persona = ${id_persona} AND pass = ${old_password}', pass_change)
+    });
 }
 
 module.exports = {

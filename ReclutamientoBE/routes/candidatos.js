@@ -129,7 +129,6 @@ router.post('/linkedin/new', (rq, rs) => {
     persona.apellido_materno = '';
     persona.tel_celular = linkedin_candidato.contactInfo.phone[0].trim().substr(0, 13);
     persona.email = linkedin_candidato.contactInfo.email[0];
-    persona.pass = generatePassword();
 
     //candidato.foto = linkedin_candidato.image;
     candidato.curriculum_vitae = crearCV(linkedin_candidato.jobs);

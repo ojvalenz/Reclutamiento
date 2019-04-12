@@ -78,11 +78,13 @@ function insertCandidato(candidato, persona) {
             candidato.id_persona = persona.id_persona;
             let query = helper.insert(candidato, tbl_candidatos) + ' RETURNING id_candidato;';
             return tx.map(query, null, c => {
-                candidato.skills.forEach(skill => Object.assign(skill, {
-                    id_candidato: c.id_candidato
-                }))
-                let query_skills = helper.insert(candidato.skills, ['id_candidato', 'id_skill', 'nivel'], 'skills_candidatos');
-                return tx.none(query_skills);
+                if (candidato.skills != undefined && candidato.skills.length > 0) {
+                    candidato.skills.forEach(skill => Object.assign(skill, {
+                        id_candidato: c.id_candidato
+                    }))
+                    let query_skills = helper.insert(candidato.skills, ['id_candidato', 'id_skill', 'nivel'], 'skills_candidatos');
+                    return tx.none(query_skills);
+                }
             })
         }).then(tx.batch);
     });
@@ -94,7 +96,18 @@ function updateCandidato(candidato, persona) {
     return db.tx(tx => {
         return tx.batch([
             tx.none(model_persona.updatePersona(persona)),
-            tx.none(query)
+            tx.none(query),
+            candidato.skills.forEach(skill => {
+                Object.assign(skill, {
+                    id_candidato: candidato.id_candidato
+                })
+                let values;
+                if (skill.comentario)
+                    values = helper.values(skill, ['id_candidato', 'id_skill', 'nivel', 'comentario'])
+                else
+                    values = helper.values(skill, ['id_candidato', 'id_skill', 'nivel'])
+                return tx.none('SELECT * FROM fn_update_skills_candidatos' + values)
+            })
         ]);
     })
 }

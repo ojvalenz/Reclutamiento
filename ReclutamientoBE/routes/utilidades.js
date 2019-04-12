@@ -25,10 +25,10 @@ router.get('/password/:id_persona', (rq, rs, n) => {
 
 router.post('/password', (rq, rs, n) => {
     let pass_change = rq.body;
-    if (pass_change !== undefined &&
-        (pass_change.id_persona !== undefined || pass_change.id_persona == '') &&
-        (pass_change.old_password !== undefined || pass_change.old_password == '') &&
-        (pass_change.new_password !== undefined || pass_change.new_password == '')
+    if (pass_change == undefined &&
+        (pass_change.id_persona == undefined || pass_change.id_persona == '') &&
+        (pass_change.old_password == undefined || pass_change.old_password == '') &&
+        (pass_change.new_password == undefined || pass_change.new_password == '')
     ) {
         rs.status(500).json(rs.app.locals.respuesta('E', 'El objecto no existe o hace falta un campo.', ''))
     }
@@ -38,7 +38,7 @@ router.post('/password', (rq, rs, n) => {
         .then(() => {
             rs.json(rs.app.locals.respuesta('S', 'Password Actualizado', ''))
         })
-        .catch(err => rs.status(500).json(rs.app.locals.respuesta('E', err.name, err)))
+        .catch(err => rs.status(500).json(rs.app.locals.respuesta('E', err.message, err.stack)))
 })
 
 /*
