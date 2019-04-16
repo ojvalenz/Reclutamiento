@@ -50,13 +50,18 @@ router.get('/:id', (rq, rs) => {
 })
 
 router.post('/', (rq, rs) => {
-    model.insertVacante(rq.body)
+    let vacante = rq.body;
+
+    if (vacante.skills == undefined && vacante == undefined)
+        rs.status(500).json(rs.app.locals.respuesta('E', 'Vacante o Skills faltantes', ''));
+
+    model.insertVacante(vacante)
         .then(data => {
             rs.json(rs.app.locals.respuesta('S', 'La vacante se guardo con exito', ''));
         })
         .catch((err) => {
             rs.status(500)
-                .json(rs.app.locals.respuesta('E', err.name, err));
+                .json(rs.app.locals.respuesta('E', err.message, err.stack));
         })
 });
 
@@ -67,7 +72,7 @@ router.put('/', (rq, rs) => {
         })
         .catch((err) => {
             rs.status(500)
-                .json(rs.app.locals.respuesta('E', err.name, err));
+                .json(rs.app.locals.respuesta('E', err.message, err.stack));
         })
 });
 

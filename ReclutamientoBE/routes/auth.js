@@ -5,6 +5,7 @@ exports.crearToken = function (id_persona) {
     return jwt.sign({
         id: id_persona
     }, secret, {
+        //expiresIn: "5 min"
         expiresIn: "24 hours"
     });
 }
