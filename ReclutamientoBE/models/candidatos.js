@@ -39,17 +39,22 @@ const tbl_candidatos = helper.ColumnSet([
     table: 'candidatos'
 });
 
+const query_skills = new PQ('SELECT sc.id_skill, sc.nivel, sc.comentarios FROM skills_candidatos sc JOIN skills s ON s.id_skill = sc.id_skill WHERE sc.activo = true AND sc.id_candidato = $1;')
+
 function getCandidatos() {
     let query_c = new PQ('SELECT * FROM candidatos;');
     let query_p = new PQ('SELECT * FROM personas WHERE id_persona = $1;');
 
-    return db.task(t => {
+    return db.tx(t => {
         return t.map(query_c, [], candidato => {
-            return t.one(query_p, candidato.id_persona)
-                .then(persona => {
-                    candidato.persona = persona;
-                    return candidato;
-                });
+            return t.batch([
+                t.one(query_p, candidato.id_persona),
+                t.any(query_skills, candidato.id_candidato)
+            ]).then(data => {
+                candidato.persona = data[0];
+                candidato.skills = data[1];
+                return candidato;
+            })
         }).then(t.batch);
     });
 }
@@ -59,11 +64,14 @@ function getCandidato(id_candidato) {
 
     return db.task(t => {
         return t.map(query_c, [id_candidato], candidato => {
-            return t.one(model_persona.getPersona(candidato.id_persona))
-                .then(persona => {
-                    candidato.persona = persona;
-                    return candidato;
-                });
+            return t.batch([
+                t.one(model_persona.getPersona(candidato.id_persona)),
+                t.any(query_skills, candidato.id_candidato)
+            ]).then(data => {
+                candidato.persona = data[0];
+                candidato.skills = data[1];
+                return candidato;
+            });
         }).then(t.batch);
     });
 }
@@ -102,8 +110,8 @@ function updateCandidato(candidato, persona) {
                     id_candidato: candidato.id_candidato
                 })
                 let values;
-                if (skill.comentario)
-                    values = helper.values(skill, ['id_candidato', 'id_skill', 'nivel', 'comentario'])
+                if (skill.comentarios)
+                    values = helper.values(skill, ['id_candidato', 'id_skill', 'nivel', 'comentarios'])
                 else
                     values = helper.values(skill, ['id_candidato', 'id_skill', 'nivel'])
                 return tx.none('SELECT * FROM fn_update_skills_candidatos' + values)

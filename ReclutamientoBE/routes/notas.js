@@ -16,8 +16,8 @@ router.get('/:id_candidato', (rq, rs, n) => {
 
 router.post('/', (rq, rs, n) => {
     model.insertNota(rq.body)
-        .then(() => {
-            rs.json(rs.app.locals.respuesta('S', 'Nota Guardada', ''))
+        .then(nota => {
+            rs.json(rs.app.locals.respuesta('S', 'Nota Guardada', nota))
         })
         .catch(err => {
             rs.status(500).json(rs.app.locals.respuesta('E', err.message, err.stack))

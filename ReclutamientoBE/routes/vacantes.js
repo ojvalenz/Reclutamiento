@@ -12,7 +12,7 @@ router.get('/', (rq, rs) => {
         })
         .catch(err => {
             rs.status(500)
-                .json(rs.app.locals.respuesta('E', err.name, err));
+                .json(rs.app.locals.respuesta('E', err.message, err.stack));
         })
 
 });
@@ -45,7 +45,7 @@ router.get('/:id', (rq, rs) => {
         })
         .catch(err => {
             rs.status(500)
-                .json(rs.app.locals.respuesta('E', err.name, err));
+                .json(rs.app.locals.respuesta('E', err.message, err.stack));
         })
 })
 
@@ -79,7 +79,7 @@ router.put('/', (rq, rs) => {
 router.delete('/:id', (rq, rs) => {
     model.deleteVacante(rq.params.id)
         .then(data => {
-            rs.status(200).send('');
+            rs.json(rs.app.locals.respuesta('S', 'Vacante Eliminada', ''));
         })
         .catch((err) => {
             rs.status(500)
