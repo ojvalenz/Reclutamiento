@@ -16,7 +16,7 @@ import { $http } from './utils/js/http'; //https://artemsky.github.io/vue-snotif
 import BootstrapVue from 'bootstrap-vue';
 import SweetModal from 'sweet-modal-vue/src/plugin.js'; // https://sweet-modal-vue.adepto.as/
 import Snotify, { SnotifyPosition } from 'vue-snotify'; //https://artemsky.github.io/vue-snotify/documentation/essentials/styling.html
-
+import moment from 'moment'
 
 import { Constants } from './utils/js/constants';
 import { alert, notify } from './utils/js/helper';
@@ -34,6 +34,7 @@ Vue.prototype.Constants = Constants;
 Vue.prototype.notify = notify;
 Vue.prototype.alert = alert;
 Vue.prototype.$http = $http;
+Vue.prototype.moment = moment;
 
 Vue.use(Vuetify);
 Vue.use(SweetModal);
@@ -42,6 +43,7 @@ Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
 Vue.component('v-select', vSelect);
 Vue.use(Snotify, { toast: { position: SnotifyPosition.rightTop } });
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false
 

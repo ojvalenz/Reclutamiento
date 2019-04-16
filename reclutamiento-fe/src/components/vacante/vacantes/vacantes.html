@@ -26,8 +26,7 @@
             </th>
             <template v-if="vacantesSelected.length > 0">
               <th colspan="6" class="actions">
-                <span @click=""
-                      ><i class="fas fa-arrow-right"></i> Asignar</span>
+                <!--<span @click=""><i class="fas fa-arrow-right"></i> Asignar</span>-->
                 <span>
                   <router-link v-if="vacantesSelected.length == 1"
                                :to="'/vacante/' + vacantesSelected[0].id_vacante"><i class="fas fa-edit"></i>Editar</router-link>

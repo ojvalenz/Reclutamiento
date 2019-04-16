@@ -11,13 +11,13 @@
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.nombre_corto" type="text" placeholder="Nombre"
+          <input v-model="vacante.nombre_corto" type="text" placeholder="Nombre" maxlength="50"
                  name="nombre" v-validate="'required'" :class="{'is-danger': errors.has('nombre'), 'form-control':true }">
         </b-form-group>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.descripcion" type="text" placeholder="Descripcion"
+          <input v-model="vacante.descripcion" type="text" placeholder="Descripcion" maxlength="250"
                  name="descripcion" v-validate="'required'" :class="{'is-danger': errors.has('descripcion'), 'form-control':true }">
         </b-form-group>
       </div>
@@ -43,13 +43,13 @@
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.ciudad" type="text" placeholder="Ciudad"
+          <input v-model="vacante.ciudad" type="text" placeholder="Ciudad" maxlength="50"
                  name="ciudad" v-validate="'required'" :class="{'is-danger': errors.has('ciudad'), 'form-control':true }">
         </b-form-group>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.duracion" type="text" placeholder="Duracion" class="form-control"
+          <input v-model="vacante.duracion" type="text" placeholder="Duracion" maxlength="50"
                  name="duracion" v-validate="'required'" :class="{'is-danger': errors.has('duracion'), 'form-control':true }">
         </b-form-group>
       </div>
@@ -61,7 +61,7 @@
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.costo_maximo" type="text" placeholder="Costo Maximo"
+          <input v-model="vacante.costo_maximo" type="number" placeholder="Costo Maximo"
                  name="costo_maximo" v-validate="'required'" :class="{'is-danger': errors.has('costo_maximo'), 'form-control':true }">
         </b-form-group>
       </div>
@@ -73,7 +73,7 @@
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4">
         <b-form-group>
-          <input v-model="vacante.posiciones" type="text" placeholder="Posiciones"
+          <input v-model="vacante.posiciones" type="number" placeholder="Posiciones"
                  name="posiciones" v-validate="'required'" :class="{'is-danger': errors.has('posiciones'), 'form-control':true }">
         </b-form-group>
       </div>

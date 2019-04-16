@@ -50,14 +50,14 @@
       self.fnSaveVacante = function () {
         app.$validator.validate().then(valid => {
           if (valid) {
-            app.vacante.skills = this.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
-            if (isEmpty(this.vacante.id_vacante)) {
+            app.vacante.skills = app.skills.filter(s => s.nivel > 0).map(s => ({ id_skill: s.id_skill, nivel: s.nivel }));
+            if (isEmpty(app.vacante.id_vacante)) {
               self.apiSaveVacante();
             } else {
               self.apiUpdateVacante();
             }
           } else {
-            this.notify(this, this.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
+            app.notify(app, app.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
           }
         });
       }
@@ -81,15 +81,15 @@
           app.catalogs.tipoContrato = response.contratos;
           if (!isEmpty(app.$route.params.id_vacante)) {
             //Edicion de vacante, cargamos sus datos
-            app.apiGetVacante();
+            self.apiGetVacante();
           }
         }, null);
       }
 
       self.apiGetVacante = function() {
         api_GetVacante(app, app.$route.params.id_vacante, true, function (vacantes) {
-          if (vacantes && vacantes.vacante) {
-            app.vacante = vacantes.vacante;
+          if (vacantes && vacantes.vacante && vacantes.vacante.length > 0) {
+            app.vacante = vacantes.vacante[0];
             if (app.vacante.skills && app.vacante.skills.length > 0) {
               app.vacante.skills.forEach(function (cSkill) {
                 app.skills.find(function (skill) {
@@ -117,7 +117,7 @@
 
       self.apiUpdateVacante = function () {
         api_UpdateVacante(app, app.vacante, true, function (response) {
-          app.notify(self, self.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
+          app.notify(app, app.Constants.Style.SUCCESS, "", "Los datos se han actualizado correctamente.", null);
         }, null);
       }
       

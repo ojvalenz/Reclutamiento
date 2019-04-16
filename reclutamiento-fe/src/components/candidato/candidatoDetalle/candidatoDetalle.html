@@ -108,10 +108,13 @@
         <div class="col-sm-12 pad-0">
           <div class="notes-container">
             <div v-for="(nota, index) in notas" class="note">
-              <div v-text="fnGetFirstLetter(nota.user)" class="img-letter"></div>
+              <div v-text="fnGetFirstLetter(nota.persona.nombre)" class="img-letter"></div>
               <div>
                 <p v-html="nota.nota" class="mar-bot-5px"></p>
-                <p v-text="nota.date" class="c-gray"></p>
+                <p class="c-gray">
+                  <span v-text="nota.persona.nombre + ' ' + nota.persona.apellido_paterno" class="mar-rig-10px"></span>
+                  <span v-text="fnFormatDate(nota.fecha_creacion)"></span>
+                </p>
               </div>
               <div class="note-actions">
                 <i @click="apiDeleteNota(nota, index)" class="fas fa-trash-alt"></i>

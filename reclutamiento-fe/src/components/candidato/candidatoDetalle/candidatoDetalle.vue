@@ -3,7 +3,8 @@
 
 <script>
   import { api_GetSkills, api_GetCandidato, api_SaveNota, api_GetNotas, api_DeleteNota } from '../../../utils/js/api';
-  import { isEmpty } from '../../../utils/js/helper';
+  import { bean_Nota } from '../../../utils/js/beans';
+  import { isEmpty, formatDate } from '../../../utils/js/helper';
 
   export default {
     name: 'CandidatoDetalle',
@@ -24,6 +25,9 @@
       },
       fnSaveNota() {
         return this.impl.fnSaveNota();
+      },
+      fnFormatDate(date) {
+        return formatDate(this, date);
       },
       apiDeleteNota(nota, index){
         this.impl.apiDeleteNota(nota, index);
@@ -46,7 +50,7 @@
 
       self.fnSaveNota = function () {
         if (!isEmpty(app.nota)) {
-          self.apiSaveNota(app.nota);
+          self.apiSaveNota(bean_Nota(app.$route.params.id_candidato, JSON.parse(localStorage.getItem("user")).id_persona, app.nota, new Date().getTime()));
         } else {
           app.notify(app, app.Constants.Style.WARNING, "", "Favor de llenar los campos requeridos", null);
         }
@@ -100,20 +104,21 @@
       }
 
       self.apiGetNotas = function () {
-        api_GetNotas(app, true, function (notas) {
-          app.notas = [];// Cuando este el servicio de GetNotas se debe de cambiar a [app.notas = notas]
+        api_GetNotas(app, app.$route.params.id_candidato, true, function (notas) {
+          app.notas = notas;
         }, null);
       }
 
-      self.apiSaveNota = function () {
-        api_SaveNota(app, app.nota, true, function (nota) {
-          app.notas.unshift({ nota: app.nota, user: "Oscar", date: new Date() });
+      self.apiSaveNota = function (nota) {
+        api_SaveNota(app, nota, true, function (nota) {
+          nota.persona = JSON.parse(localStorage.getItem("user"));
+          app.notas.unshift(nota);
           app.nota = "";
         }, null);
       }
 
       self.apiDeleteNota = function (nota, index) {
-        api_DeleteNota(app, nota, true, function (nota) {
+        api_DeleteNota(app, nota.id_nota, true, function (nota) {
           app.notas.splice(index, 1);
         }, null);
       }

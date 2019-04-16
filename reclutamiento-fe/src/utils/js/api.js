@@ -51,17 +51,17 @@ export const api_UpdateVacante = (app, vacante, showLoading, functionOnSuccess, 
 
 export const api_SaveNota = (app, nota, showLoading, functionOnSuccess, functionOnError) => {
   //Se debe ajustar este servicio para llamar el endpoint de GUARDAR NOTA
-  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+  app.$http(app, '/notas', app.Constants.HTTPmethod.POST, nota, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
     functionOnSuccess, showLoading, functionOnError, true);
 }
-export const api_GetNotas = (app, showLoading, functionOnSuccess, functionOnError) => {
+export const api_GetNotas = (app, id_candidato, showLoading, functionOnSuccess, functionOnError) => {
   //Se debe ajustar este servicio para llamar el endpoint de RECUPERAR NOTAS
-  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+  app.$http(app, '/notas/' + id_candidato, app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.URL, app.Constants.ResponseType.JSON,
     functionOnSuccess, showLoading, functionOnError, true);
 }
-export const api_DeleteNota = (app, nota, showLoading, functionOnSuccess, functionOnError) => {
+export const api_DeleteNota = (app, id_nota, showLoading, functionOnSuccess, functionOnError) => {
   //Se debe ajustar este servicio para llamar el endpoint de ELIMINAR NOTA
-  app.$http(app, '/vacantes', app.Constants.HTTPmethod.GET, null, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
+  app.$http(app, '/notas/' + id_nota, app.Constants.HTTPmethod.DELETE, {}, app.Constants.ContentType.JSON, app.Constants.ResponseType.JSON,
     functionOnSuccess, showLoading, functionOnError, true);
 }
 
