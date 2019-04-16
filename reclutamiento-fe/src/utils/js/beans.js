@@ -39,6 +39,15 @@ export const bean_Vacante = function () {
     posiciones: null,
     prioridad: null,
     comentarios: null,
-    grupo_skills: []
+    skills: []
+  }
+}
+
+export const bean_Nota = function (id_candidato, persona_creacion, nota, fecha_creacion) {
+  return {
+    id_candidato: id_candidato,
+    persona_creacion: persona_creacion,
+    nota: nota,
+    fecha_creacion: fecha_creacion
   }
 }

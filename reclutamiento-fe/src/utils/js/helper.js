@@ -86,3 +86,7 @@ export const notify = function(app, style, title, message, timeout) {
     position: 'rightTop'
   });
 }
+
+export const formatDate = function (app, date) {
+  return app.moment(Number(date)).format('DD-MM-YYYY HH:mm a');
+}

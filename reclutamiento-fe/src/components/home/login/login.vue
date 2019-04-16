@@ -44,7 +44,7 @@
         api_Login(app, parameters, function (data) {
           //Agregamos estos campos para manejar roles y mostrar una imagen de usuario
           data.USER.role = 'ADMIN';
-          data.USER.avatar = 'https://cloud.dicka.com.mx/avatar/orodriguezs/32?v=2';
+          data.USER.avatar = 'https://secure.gravatar.com/avatar/755ba87e0a9949e846b042a8ac44723e?s=600&d=mm&r=g';
 
           window.localStorage.setItem('user', JSON.stringify(data.USER));
           window.localStorage.setItem('token', data.TOKEN);
